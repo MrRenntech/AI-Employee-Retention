@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Batch Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container wide">
+        <h1>Batch Attrition Risk Results</h1>
+        <div class="table-responsive">
+            {{ tables|safe }}
+        </div>
+        <div class="actions">
+            <a href="/" class="btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+
+</html>

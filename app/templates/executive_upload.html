@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Executive Dashboard Upload</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Executive Attrition Dashboard</h1>
+        <p>Upload employee dataset for organization-level attrition overview.</p>
+
+        <div class="card">
+            <form action="/executive" method="POST" enctype="multipart/form-data" class="batch-form">
+                <input type="file" name="file" required accept=".csv">
+                <button type="submit" class="btn-primary">Generate Executive Report</button>
+            </form>
+        </div>
+
+        <div class="actions">
+            <a href="/" class="btn-secondary">Back to Main Dashboard</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Executive Attrition Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="container wide">
+
+        <h1>Executive Attrition Risk Overview</h1>
+
+        <div class="summary-cards">
+            <div class="card">
+                <h3>Total Employees</h3>
+                <p class="metric">{{ total }}</p>
+            </div>
+
+            <div class="card {{ 'high' if high_risk > 0 else 'low' }}">
+                <h3>High Risk Employees</h3>
+                <p class="metric">{{ high_risk }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Average Risk Probability</h3>
+                <p class="metric">{{ avg_risk }}%</p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <h2>Top Organizational Risk Drivers</h2>
+                <ul class="feature-list">
+                    {% for driver in top_drivers %}
+                    <li>{{ driver }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>Strategic Recommendation</h2>
+                <p>
+                    Focus retention efforts on high-risk employees, especially addressing
+                    the dominant drivers listed above. Implement compensation review,
+                    managerial engagement, and career growth initiatives as prioritized actions.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Top 10 Highest Risk Employees</h2>
+            <div class="table-responsive">
+                {{ table|safe }}
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="/executive" class="btn-secondary">Upload New Data</a>
+            <a href="/" class="btn-secondary">Back to Main Dashboard</a>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

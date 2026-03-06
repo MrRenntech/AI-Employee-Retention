@@ -1,0 +1,253 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.container.wide {
+    max-width: 1200px;
+}
+
+h1 {
+    color: #1f3c88;
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: #444;
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+h3 {
+    color: #1f3c88;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+/* Form Styles */
+.grid-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+input[type="number"],
+input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #1f3c88;
+    outline: none;
+}
+
+/* Buttons */
+.form-actions {
+    grid-column: 1 / -1;
+    text-align: center;
+    margin-top: 20px;
+}
+
+button,
+.btn-primary,
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+    transition: background 0.3s;
+    margin: 5px;
+}
+
+.btn-primary,
+button[type="submit"] {
+    background: #1f3c88;
+    color: white;
+}
+
+.btn-primary:hover,
+button[type="submit"]:hover {
+    background: #162a60;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Risk Box */
+.risk-box {
+    padding: 20px;
+    border-radius: 6px;
+    text-align: center;
+    margin-bottom: 30px;
+    border: 1px solid transparent;
+}
+
+.high {
+    background: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+.low {
+    background: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.risk-box h2 {
+    margin: 0 0 10px 0;
+    color: inherit;
+}
+
+/* Results Grid */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.feature-list,
+.recommendation-list {
+    padding-left: 20px;
+}
+
+.feature-list li,
+.recommendation-list li {
+    margin-bottom: 5px;
+}
+
+/* Data Table */
+.table-responsive {
+    overflow-x: auto;
+}
+
+table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table.data th,
+table.data td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table.data th {
+    background-color: #1f3c88;
+    color: white;
+    font-weight: 600;
+}
+
+table.data tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Executive Dashboard Styles */
+.summary-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.summary-cards .card {
+    flex: 1;
+    text-align: center;
+    margin-bottom: 0;
+    /* Override default card margin */
+    background: #e9eef5;
+}
+
+.summary-cards .card.high {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.metric {
+    font-size: 2em;
+    font-weight: bold;
+    color: #1f3c88;
+    margin: 10px 0 0 0;
+}
+
+.summary-cards .card.high .metric {
+    color: #721c24;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .summary-cards {
+        flex-direction: column;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HR Attrition Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Employee Attrition Risk Assessment</h1>
+
+    <div class="card">
+        <h2>Individual Assessment</h2>
+        <form action="/predict" method="POST" class="grid-form">
+            {% for feature in [
+            'Age','DailyRate','DistanceFromHome','Education',
+            'EnvironmentSatisfaction','HourlyRate','JobInvolvement',
+            'JobLevel','JobSatisfaction','MonthlyIncome',
+            'MonthlyRate','NumCompaniesWorked','PercentSalaryHike',
+            'PerformanceRating','RelationshipSatisfaction',
+            'StockOptionLevel','TotalWorkingYears',
+            'TrainingTimesLastYear','WorkLifeBalance',
+            'YearsAtCompany','YearsInCurrentRole',
+            'YearsSinceLastPromotion','YearsWithCurrManager'] %}
+                <div class="form-group">
+                    <label>{{ feature }}</label>
+                    <input type="number" name="{{ feature }}" required step="any">
+                </div>
+            {% endfor %}
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Assess Risk</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Batch Upload</h2>
+        <p>Upload a CSV file containing employee data for bulk risk assessment.</p>
+        <form action="/batch" method="POST" enctype="multipart/form-data" class="batch-form">
+            <input type="file" name="file" required accept=".csv">
+            <button type="submit" class="btn-secondary">Upload CSV</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
