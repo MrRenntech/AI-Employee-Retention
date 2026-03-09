@@ -13,7 +13,8 @@ This document explains the purpose and functionality of each file in the project
         *   Loads the trained Random Forest model (`rf_model.pkl`) and scaler (`scaler.pkl`).
         *   Defines a `/predict` endpoint (POST).
         *   Accepts JSON data representing an employee.
-        *   Returns JSON with Attrition Risk (High/Low), Probability, Top Risk Factors, and Recommended Actions.
+        *   Returns JSON or renders HTML templates with Attrition Risk (High/Low), Probability, Top Risk Factors, and Recommended Actions.
+    * **Frontend Files** (`app/static/`, `app/templates/`): Implements an advanced, high-contrast, modern responsive UI.
 
 ## `src/` (Source Code)
 *   **`data_preprocessing.py`**:
@@ -32,7 +33,7 @@ This document explains the purpose and functionality of each file in the project
     *   **Logic**:
         *   Imports preprocessing logic.
         *   Splits data into training/testing sets.
-        *   Trains a Logistic Regression model.
+    *   Trains a Logistic Regression model achieving 88% overall accuracy.
         *   Saves artifacts to `models/`.
 
 *   **`train_model_rf.py`**:

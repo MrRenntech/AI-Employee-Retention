@@ -1,29 +1,45 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Executive Dashboard Upload</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Dashboard Upload - RetentionAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
     <div class="container">
-        <h1>Executive Attrition Dashboard</h1>
-        <p>Upload employee dataset for organization-level attrition overview.</p>
+        <nav class="header-nav">
+            <a href="/" class="brand">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                RetentionAI
+            </a>
+            <div class="header-links">
+                <a href="/">Predict Risk</a>
+                <a href="/executive" class="active">Executive Dashboard</a>
+            </div>
+        </nav>
 
+        <h1>Executive Dashboard</h1>
+        
         <div class="card">
-            <form action="/executive" method="POST" enctype="multipart/form-data" class="batch-form">
-                <input type="file" name="file" required accept=".csv">
-                <button type="submit" class="btn-primary">Generate Executive Report</button>
-            </form>
-        </div>
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="var(--primary)" viewBox="0 0 16 16" style="margin-bottom: 1rem;">
+                    <path d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5v-1zm3-4a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H6a.5.5 0 0 1-.5-.5v-1zm2-4a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1z"/>
+                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
+                </svg>
+                <h2>Organization-Level Analysis</h2>
+                <p style="color: var(--text-muted);">Upload your company-wide employee dataset to generate a holistic view of attrition risk, identify systemic drivers, and view the top high-risk personnel.</p>
+            </div>
 
-        <div class="actions">
-            <a href="/" class="btn-secondary">Back to Main Dashboard</a>
+            <form action="/executive" method="POST" enctype="multipart/form-data" style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
+                <input type="file" name="file" required accept=".csv" style="max-width: 400px; width: 100%;">
+                <button type="submit" class="btn-primary" style="width: 100%; max-width: 400px;">Generate Executive Report</button>
+            </form>
         </div>
     </div>
 
 </body>
-
 </html>

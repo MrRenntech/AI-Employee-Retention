@@ -31,3 +31,8 @@ venv.bak/
 .idea/
 .vscode/
 *.ipynb_checkpoints/
+
+# Project Specific
+data/*.csv
+models/*.pkl
+*.log

@@ -1,21 +1,40 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Batch Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batch Results - RetentionAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
+
     <div class="container wide">
+        <nav class="header-nav">
+            <a href="/" class="brand">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                RetentionAI
+            </a>
+            <div class="header-links">
+                <a href="/">New Prediction</a>
+            </div>
+        </nav>
+
         <h1>Batch Attrition Risk Results</h1>
-        <div class="table-responsive">
-            {{ tables|safe }}
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">Employees are ranked by their attrition probability. Focus retention efforts on the top of this list.</p>
+
+        <div class="card" style="padding: 0; overflow: hidden;">
+            <div class="table-responsive">
+                {{ tables|safe }}
+            </div>
         </div>
+
         <div class="actions">
-            <a href="/" class="btn-secondary">Back to Dashboard</a>
+            <a href="/" class="btn-primary">Process Another File</a>
+            <a href="/executive" class="btn-secondary">View Executive Dashboard</a>
         </div>
     </div>
-</body>
 
+</body>
 </html>

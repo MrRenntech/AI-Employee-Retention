@@ -1,3 +1,10 @@
+"""
+Employee Attrition Prediction API & Web Dashboard
+=================================================
+This Flask application serves as the production interface for the employee attrition model.
+It provides a web interface for HR personnel to perform both individual and batch risk assessments,
+along with an executive dashboard for organization-wide attrition metrics.
+"""
 from flask import Flask, render_template, request
 import joblib
 import numpy as np
@@ -31,29 +38,43 @@ FEATURE_NAMES = [
 app = Flask(__name__)
 
 def retention_recommendation(top_factors):
+    """
+    Generates tailored retention strategies mapped to an employee's specific risk drivers.
+    
+    Args:
+        top_factors (list): A list of the most influential features driving attrition risk.
+        
+    Returns:
+        list: Actionable recommendations for HR to intervene.
+    """
     actions = []
     if "MonthlyIncome" in top_factors:
-        actions.append("Compensation review recommended.")
+        actions.append("Compensation review recommended. Ensure pay is competitive for role.")
     if "WorkLifeBalance" in top_factors:
-        actions.append("Improve work-life balance initiatives.")
+        actions.append("Improve work-life balance initiatives. Offer flexible schedules.")
     if "YearsSinceLastPromotion" in top_factors:
-        actions.append("Career growth discussion required.")
+        actions.append("Career growth discussion required. Identify paths for advancement.")
     if "JobSatisfaction" in top_factors:
-        actions.append("Manager engagement session suggested.")
+        actions.append("Manager engagement session suggested. Conduct targeted 1-on-1s.")
     if "EnvironmentSatisfaction" in top_factors:
         actions.append("Workplace environment assessment needed.")
     if "RelationshipSatisfaction" in top_factors:
         actions.append("Team building and interpersonal conflict resolution.")
     if not actions:
-        actions.append("Regular engagement and monitoring.")
+        actions.append("Regular engagement and continuous performance monitoring.")
     return actions
 
 @app.route("/")
 def home():
+    """Renders the main dashboard for individual risk prediction and batch uploads."""
     return render_template("index.html")
 
 @app.route("/predict", methods=["POST"])
 def predict():
+    """
+    Endpoint for predicting attrition risk for a single employee based on form inputs.
+    Extracts form fields, scales inputs, predicts probability, and calculates key risk drivers.
+    """
     try:
         values = [float(request.form.get(f)) for f in FEATURE_NAMES]
         input_df = pd.DataFrame([values], columns=FEATURE_NAMES)
@@ -84,6 +105,10 @@ def predict():
 
 @app.route("/batch", methods=["POST"])
 def batch():
+    """
+    Endpoint for uploading a CSV of multiple employees to perform bulk risk assessment.
+    Returns a rendered HTML template containing a sorted pandas DataFrame of the high-risk employees.
+    """
     if 'file' not in request.files:
         return "No file part", 400
     file = request.files["file"]
@@ -112,6 +137,11 @@ def batch():
 
 @app.route("/executive", methods=["GET", "POST"])
 def executive():
+    """
+    Endpoint for the Executive Dashboard.
+    GET: Displays the CSV upload dialogue.
+    POST: Processes a corporate-wide dataset, generating high-level metrics and a priority list.
+    """
     if request.method == "POST":
         try:
             if 'file' not in request.files:

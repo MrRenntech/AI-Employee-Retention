@@ -1,68 +1,94 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Executive Attrition Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Attrition Dashboard - RetentionAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-
 <body>
 
     <div class="container wide">
+        <nav class="header-nav">
+            <a href="/" class="brand">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                RetentionAI
+            </a>
+            <div class="header-links">
+                <a href="/">Predict Risk</a>
+                <a href="/executive" class="active">Executive Dashboard</a>
+            </div>
+        </nav>
 
-        <h1>Executive Attrition Risk Overview</h1>
+        <h1>Executive Overview</h1>
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Holistic view of organizational attrition risk.</p>
 
         <div class="summary-cards">
             <div class="card">
                 <h3>Total Employees</h3>
                 <p class="metric">{{ total }}</p>
+                <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">Analyzed from dataset</p>
             </div>
 
             <div class="card {{ 'high' if high_risk > 0 else 'low' }}">
                 <h3>High Risk Employees</h3>
                 <p class="metric">{{ high_risk }}</p>
+                <p style="color: inherit; font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.8;">Require immediate intervention</p>
             </div>
 
             <div class="card">
-                <h3>Average Risk Probability</h3>
+                <h3>Average Risk Level</h3>
                 <p class="metric">{{ avg_risk }}%</p>
+                <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">Across organization</p>
             </div>
         </div>
 
         <div class="dashboard-grid">
             <div class="card">
-                <h2>Top Organizational Risk Drivers</h2>
-                <ul class="feature-list">
+                <h2 style="display: flex; align-items: center; gap: 0.5rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--primary)" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
+                    </svg>
+                    Top Systemic Risk Drivers
+                </h2>
+                <ul class="feature-list" style="margin-top: 1.5rem;">
                     {% for driver in top_drivers %}
                     <li>{{ driver }}</li>
                     {% endfor %}
                 </ul>
             </div>
 
-            <div class="card">
-                <h2>Strategic Recommendation</h2>
-                <p>
-                    Focus retention efforts on high-risk employees, especially addressing
-                    the dominant drivers listed above. Implement compensation review,
-                    managerial engagement, and career growth initiatives as prioritized actions.
+            <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
+                <h2 style="color: var(--primary);">Strategic Guidance</h2>
+                <p style="font-size: 1.125rem;">
+                    Focus comprehensive retention initiatives on high-risk personnel, specifically targeting
+                    the dominant systemic drivers. Recommended prioritized actions include:
                 </p>
+                <ul style="color: var(--text-muted); line-height: 1.8; margin-top: 0.5rem;">
+                    <li>Competitive compensation reviews</li>
+                    <li>Managerial and team engagement workshops</li>
+                    <li>Defined career growth pathways</li>
+                </ul>
             </div>
         </div>
 
-        <div class="card">
-            <h2>Top 10 Highest Risk Employees</h2>
-            <div class="table-responsive">
+        <div class="card" style="padding: 0; overflow: hidden; margin-top: 2rem;">
+            <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; font-size: 1.25rem;">Critical Priority Roster</h2>
+                <span style="font-size: 0.875rem; color: var(--danger-text); background: var(--danger-bg); padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 500;">Top 10 Highest Risk</span>
+            </div>
+            <div class="table-responsive" style="border: none; border-radius: 0;">
                 {{ table|safe }}
             </div>
         </div>
 
-        <div class="actions">
-            <a href="/executive" class="btn-secondary">Upload New Data</a>
-            <a href="/" class="btn-secondary">Back to Main Dashboard</a>
+        <div class="actions" style="margin-top: 3rem; margin-bottom: 2rem;">
+            <a href="/executive" class="btn-primary">Analyze New Dataset</a>
         </div>
 
     </div>
 
 </body>
-
 </html>
