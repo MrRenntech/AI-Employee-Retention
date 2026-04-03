@@ -9,3 +9,4 @@ Flask-Login
 Flask-SQLAlchemy
 pytest
 werkzeug
+gunicorn

@@ -1,78 +1,73 @@
-# File Descriptions
+# Project File Descriptions 📂
 
-This document explains the purpose and functionality of each file in the project.
+Welcome to the heart of the project! This document serves as your ultimate guide to understanding what every single file in this project does. Think of it as the blueprints to a finely tuned machine.
 
-## Root Directory
-*   `requirements.txt`: Lists all Python code dependencies required to run the project.
-*   `README.md`: General project overview (to be created).
+---
 
-## `app/` (Deployment)
-*   **`app.py`**:
-    *   **Purpose**: A lightweight Flask web server acting as the prediction API.
-    *   **Logic**:
-        *   Loads the trained Random Forest model (`rf_model.pkl`) and scaler (`scaler.pkl`).
-        *   Defines a `/predict` endpoint (POST).
-        *   Accepts JSON data representing an employee.
-        *   Returns JSON or renders HTML templates with Attrition Risk (High/Low), Probability, Top Risk Factors, and Recommended Actions.
-    * **Frontend Files** (`app/static/`, `app/templates/`): Implements an advanced, high-contrast, modern responsive UI.
-        *   `index.html`: The main landing page for single employee risk assessment.
-        *   `result.html`: Displays the single prediction result with interventions.
-        *   `batch_result.html`: Displays the tabular results of a CSV batch upload.
-        *   `executive_upload.html`: The upload screen for the executive data batch processing.
-        *   `executive.html`: The comprehensive high-level dashboard with charts and aggregate metrics for HR leadership.
+## The Root Folder (Where Everything Starts)
+These files sit at the base of the folder and prepare the environment before any code runs.
 
-## `src/` (Source Code)
-*   **`data_preprocessing.py`**:
-    *   **Purpose**: Handles all data cleaning and transformation tasks.
-    *   **Key Functions**: `load_and_preprocess(path)`
-    *   **Logic**:
-        *   Loads CSV data.
-        *   Drops irrelevant columns (e.g., `EmployeeNumber`).
-        *   Encodes the target variable `Attrition` (Yes=1, No=0).
-        *   Encodes categorical features using `LabelEncoder`.
-        *   Scales numerical features using `StandardScaler`.
-        *   Returns processed features (`X`), target (`y`), the fitted `scaler`, and feature names.
+*   `requirements.txt`: This is our grocery list! It tells Python exactly which external libraries it needs to download to make our code work (like `pandas` for data or `Flask` for the website).
+*   `README.md`: The cover page of our project. It rapidly explains what the project is, what it looks like, and why it's important. 
 
-*   **`train_model.py`**:
-    *   **Purpose**: Trains the machine learning model (Logistic Regression Baseline).
-    *   **Logic**:
-        *   Imports preprocessing logic.
-        *   Splits data into training/testing sets.
-    *   Trains a Logistic Regression model achieving 88% overall accuracy.
-        *   Saves artifacts to `models/`.
+---
 
-*   **`train_model_rf.py`**:
-    *   **Purpose**: Trains the advanced Random Forest model.
-    *   **Logic**:
-        *   Trains a `RandomForestClassifier`.
-        *   Evaluates accuracy (typically higher than baseline).
-        *   Calculates **Feature Importance** (what drives attrition).
-        *   Saves the model to `models/rf_model.pkl`.
-        *   Generates and saves a feature importance plot to `models/feature_importance.png`.
+## `app/` (The Web Portal)
+This folder holds everything needed to power the website that HR executives will click on and interact with.
 
-*   **`evaluate_model.py`**:
-    *   **Purpose**: Evaluates the trained model's performance on the full dataset (or test set).
-    *   **Logic**:
-        *   Loads the saved model (`attrition_model.pkl`).
-        *   Predicts attrition on the dataset.
-        *   Prints a **Confusion Matrix** and **Classification Report**.
+*   **`app.py`**: The Brain of the Website. 
+    *   It wakes up the Flask web server.
+    *   It links up your web browser to the actual Machine Learning models in the background.
+    *   It securely checks your username and password when you log in.
+    *   It accepts employee data, asks the AI model "will they quit?", and routes the answer back to your screen.
+*   **`init_db.py`**: The Builder. If you run this file, it creates a blank, fresh database inside our project and inserts a default "admin" account so you can log into the website.
+*   **`models.py`**: The Database Blueprint (Powered by SQLAlchemy). It explicitly defines what our data looks like when saved to the hard drive. It defines two things:
+    1.  The `User` table (who is allowed to log in).
+    2.  The `PredictionLog` table (a giant history book recording every time you run an AI prediction).
 
-*   **`retention_engine.py`**:
-    *   **Purpose**: The core logic for identifying high-risk employees and suggesting interventions.
-    *   **Logic**:
-        *   Loads the advanced Random Forest model.
-        *   Calculates attrition probability for employees.
-        *   Identifies "High Risk" employees (Prob > 70%).
-        *   Suggests targeted interventions (e.g., "Review Compensation").
+### `app/templates/` (The Visual Screens)
+These are the HTML files that create the actual web pages you see.
+*   `login.html`: The secure entry page demanding a username and password.
+*   `index.html`: The main dashboard page asking if you want to analyze a single employee or upload a giant CSV spreadsheet.
+*   `result.html`: Shows the risk of a *single* employee, complete with tailor-made advice on how to keep them.
+*   `batch_result.html`: Displays a massive, scrollable table ranking hundreds of employees by their risk after a CSV upload.
+*   `executive.html`: The beautiful, high-level screen with charts (like total risk distribution and department breakdowns) for the executives to stare at.
+*   `executive_upload.html`: A tiny helper screen to drop the CSV file into the executive dashboard.
+*   `history.html`: A table displaying past AI predictions saved securely in our SQLite database.
 
-## `data/`
-*   `employee_attrition.csv`: The raw input dataset containing employee records.
+### `app/static/` (The Paintjob)
+*   `style.css`: All the colors, animations, shadows, and fonts that make our website look extremely expensive and premium (using modern "glassmorphism" design).
 
-## `models/`
-*   `attrition_model.pkl`: The serialized (saved) trained Logistic Regression model.
-*   `rf_model.pkl`: The serialized (saved) trained Random Forest model.
-*   `scaler.pkl`: The serialized StandardScaler object used to normalize input data.
-*   `feature_importance.png`: Visual chart of top attrition factors.
+---
 
-## `docs/`
-*   Contains all project documentation.
+## `src/` (The Data Science Engine)
+This is the math powerhouse. These scripts train the AI BEFORE the website even launches.
+
+*   **`data_preprocessing.py`**: The Cleaner. It takes raw, messy HR data, turns words into numbers (since AI only speaks math), and squishes all numbers to be on exactly the same scale (so a $10,000 salary doesn't overwhelm a 5-year tenure).
+*   **`train_model.py`**: The Teacher (Baseline Model). It feeds our cleaned data into a `Logistic Regression` algorithm. It tests the algorithm until it reaches 88% accuracy, and then saves it to a file.
+*   **`train_model_rf.py`**: The Advanced Teacher. It trains a more complex `Random Forest` algorithm capable of seeing hidden patterns and calculating exactly *which* factors (like Salary vs Boss) cause the most attrition.
+*   **`evaluate_model.py`**: The Grader. It double checks the models' homework and prints out a "Report Card" detailing exact accuracies and errors.
+*   **`retention_engine.py`**: The Strategist. A script that marries the predictions to actual English sentences (e.g. "Fix this employee's work-life balance!").
+*   **`generate_fake_dataset.py`**: The Simulator. It generates a massive spreadsheet of 2,000 completely fake employees just so we have something to safely test our application with!
+
+---
+
+## `tests/` (The Automated QA Robots)
+These files act as robot testers built using `pytest`. 
+*   **`test_model.py`**: Checks that our trained AI brains (`.pkl` files) actually exist and work on the hard drive before we try to load them.
+*   **`test_app.py`**: Checks that the website is alive. It literally pretends to be a user, clicks the login button, and makes sure the website responds correctly instead of crashing.
+
+---
+
+## `.github/workflows/` (The CI/CD Factory)
+*   **`ci.yml`**: A set of remote commands. Every time you push Code to GitHub, this file tells GitHub to automatically boot up a Linux computer, install Python, and run the `tests/` folder to make absolutely sure you didn't break the project with your newest code.
+
+---
+
+## `data/` and `models/` (The Storage Lockers)
+*   `data/employee_attrition.csv`: The Excel/CSV files filled with employee rows.
+*   `models/attrition_model.pkl`: The saved "Brain" of our AI. By saving it here, the website doesn't need to re-learn everything every time it turns on.
+*   `models/scaler.pkl`: The saved mathematical ruler that ensures all new data is properly squished before entering the brain. 
+*   `models/rf_model.pkl`: The advanced Random Forest brain.
+
+And that's everything! Every file works together in perfect harmony.

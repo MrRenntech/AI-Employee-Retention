@@ -39,8 +39,8 @@ FEATURE_NAMES = [
 ]
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'retention_ai_super_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///retention.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'retention_ai_super_secret_key_local_dev')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///retention.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 from app.models import db, User, PredictionLog

@@ -21,11 +21,12 @@
 RetentionAI transforms raw HR metrics into clear, actionable intelligence. It utilizes an **88% accurate** Logistic Regression machine learning model (baseline) and an Advanced Random Forest model integrated into a meticulously designed, beautiful Flask web interface. The system identifies high-risk employees instantly and suggests tailored retention strategies based on individual risk drivers.
 
 ## ✨ Key Features
-- 🧠 **Precision Machine Learning**: Achieves an **88% baseline accuracy** (93% F1-score for retention) with Logistic Regression, and supports an advanced Random Forest model for non-linear feature analysis.
+- 🧠 **Precision Machine Learning**: Achieves an **88% baseline accuracy** (93% F1-score for retention) with Logistic Regression.
 - 💎 **Premium Web Dashboard**: A stunning, modern UI built with custom CSS, glassmorphism, responsive data grids, and smooth animations.
-- 🎯 **Individual Assessments**: Predict a single employee's risk instantly by inputting metrics directly into the aesthetic form.
-- 🗂️ **Batch Processing Engine**: Upload organizational `.csv` rosters to dynamically rank hundreds of employees by attrition probability.
-- 📊 **Executive Dashboard**: A sleek high-level overview detailing aggregate risk distributions and systemic organizational drivers.
+- 🔒 **Secure Authentication**: HR Executive portal protected with robust Flask-Login authentication flows.
+- 🎯 **Individual Assessments**: Predict a single employee's risk instantly by inputting metrics directly into the form.
+- 🗂️ **Batch Processing Engine**: Upload organizational `.csv` rosters to dynamically rank hundreds of employees.
+- 📊 **Executive Dashboard & History**: High-level overview detailing aggregate risk distributions alongside an SQLite-backed system to persistently log predictions.
 
 For full details on the machine learning models and performance metrics, please read the [Project Summary (`docs/SUMMARY.md`)](docs/SUMMARY.md).
 

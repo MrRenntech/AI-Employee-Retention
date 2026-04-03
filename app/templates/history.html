@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History - RetentionAI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <h1>Prediction History</h1>
+            <p>Review past attrition risk evaluations.</p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('home') }}" class="btn">Back to Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="btn secondary">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="data-table-container">
+            <h2 style="padding: 20px; color: #1f3c88;">Recent Logs</h2>
+            <div style="overflow-x: auto;">
+                <table class="data">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Timestamp</th>
+                            <th>Type</th>
+                            <th>Employee ID</th>
+                            <th>Risk Level</th>
+                            <th>Probability</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log.id }}</td>
+                            <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td>{{ log.prediction_type }}</td>
+                            <td>{{ log.employee_id }}</td>
+                            <td>
+                                <span style="color: {{ '#e74c3c' if log.risk_level == 'High Risk' else '#2ecc71' if log.risk_level == 'Low Risk' else '#f39c12' }}; font-weight: bold;">
+                                    {{ log.risk_level }}
+                                </span>
+                            </td>
+                            <td>{{ log.probability | round(2) }}%</td>
+                            <td style="font-size: 11px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                {{ log.details }}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" style="text-align: center;">No prediction history found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

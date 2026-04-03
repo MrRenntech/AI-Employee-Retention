@@ -25,7 +25,7 @@
 11. **Verification**: Validated application functionality by running `python app/app.py` and checking the frontend.
 12. **Documentation Update**: Updated `README.md`, `SUMMARY.md`, and other docs to log accuracy and UI changes.
 
-## Phase 3: Future Goals (Pending)
-13. **Authentication**: Implement a secure login portal for HR Executives.
-14. **Database Expansion**: Integrate a relational database (PostgreSQL/MySQL) to track historical predictions instead of relying purely on real-time CSV evaluation.
-15. **Continuous Integration**: Implement a CI/CD pipeline and write unit tests for the ML pipeline.
+## Phase 3: Final Integrations (Completed)
+13. **Authentication**: Implemented a secure login portal for HR Executives using Flask-Login and SQLite.
+14. **Database Expansion**: Integrated an SQLite database to track historical predictions, viewable in a History dashboard.
+15. **Continuous Integration**: Implemented a GitHub Actions CI pipeline and comprehensive `pytest` unit tests for the ML pipeline and Flask routes.
