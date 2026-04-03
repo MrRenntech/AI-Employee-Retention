@@ -24,7 +24,7 @@ COPY . .
 EXPOSE 5000
 
 # Initialize the database (Creates the SQLite DB and an admin user)
-RUN python app/init_db.py
+RUN python -c "from app.init_db import init_db; init_db()"
 
 # Run the High-Performance WSGI server
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "app.app:app"]
