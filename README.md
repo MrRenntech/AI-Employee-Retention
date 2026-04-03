@@ -1,93 +1,75 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/MrRenntech/AI-Employee-Retention/main/app/static/favicon.ico" width="100" />
-</p>
+<div align="center">
+  
+# 🧠 RetentionAI: Enterprise Employee Attrition Engine
 
-<h1 align="center">🌟 RetentionAI: Employee Attrition Prediction 🌟</h1>
+[![Live Deployment](https://img.shields.io/badge/Live_Deployment-Up_%26_Running-success?style=for-the-badge&logo=render)](https://ai-employee-retention.onrender.com/)
+[![Python Requirements](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
+[![Flask Web Framework](https://img.shields.io/badge/Flask-Web_App-black?style=for-the-badge&logo=flask)](https://flask.palletsprojects.com/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Machine_Learning-orange?style=for-the-badge&logo=scikit-learn)](https://scikit-learn.org/)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/Flask-Web%20App-black?style=for-the-badge&logo=flask&logoColor=white" />
-  <img src="https://img.shields.io/badge/Model%20Accuracy-88%25-brightgreen?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge" />
-</p>
-
-<p align="center">
-  <i>An advanced AI-powered HR analytics tool designed to predict employee attrition risk and provide actionable retention interventions.</i>
-</p>
+**A Production-Ready AI Suite for Proactive HR Decision Making.**
 
 ---
 
-## 🚀 Project Overview
-RetentionAI transforms raw HR metrics into clear, actionable intelligence. It utilizes an **88% accurate** Logistic Regression machine learning model (baseline) and an Advanced Random Forest model integrated into a meticulously designed, beautiful Flask web interface. The system identifies high-risk employees instantly and suggests tailored retention strategies based on individual risk drivers.
+</div>
 
-## ✨ Key Features
-- 🧠 **Precision Machine Learning**: Achieves an **88% baseline accuracy** (93% F1-score for retention) with Logistic Regression.
-- 💎 **Premium Web Dashboard**: A stunning, modern UI built with custom CSS, glassmorphism, responsive data grids, and smooth animations.
-- 🔒 **Secure Authentication**: HR Executive portal protected with robust Flask-Login authentication flows.
-- 🎯 **Individual Assessments**: Predict a single employee's risk instantly by inputting metrics directly into the form.
-- 🗂️ **Batch Processing Engine**: Upload organizational `.csv` rosters to dynamically rank hundreds of employees.
-- 📊 **Executive Dashboard & History**: High-level overview detailing aggregate risk distributions alongside an SQLite-backed system to persistently log predictions.
+## 🌐 Live Application
+The fully functional production application is currently live on Render:
+👉 **[Access RetentionAI Here](https://ai-employee-retention.onrender.com/)**
 
-For full details on the machine learning models and performance metrics, please read the [Project Summary (`docs/SUMMARY.md`)](docs/SUMMARY.md).
+*(For security and system health, the app requires authentication. If deployed locally, you can initialize the DB using `python app/init_db.py` to generate the default `admin`/`password` account.)*
 
 ---
 
-## 📂 Project Architecture
-```graphql
-employee-attrition-ai/
-├── app/                    # 🌐 Web Application (Flask)
-│   ├── static/             # 🎨 Modern CSS styles & Assets
-│   ├── templates/          # 📄 Responsive HTML templates
-│   └── app.py              # ⚙️ Routing & Model Inference API
-├── data/                   # 📊 Dataset storage (Ignored in Git)
-├── docs/                   # 📚 Detailed Architecture & Walkthroughs
-├── models/                 # 🧠 Serialized ML formats (attrition_model.pkl)
-├── notebooks/              # 📓 Jupyter notebooks for EDA
-└── src/                    # 🛠️ Data pipeline and Training scripts
-```
-*For a detailed breakdown of every file, please refer to [File Descriptions (`docs/FILE_DESCRIPTIONS.md`)](docs/FILE_DESCRIPTIONS.md).*
+## 📖 Project Overview
+Traditional HR systems rely on reactive measures—like exit interviews—to understand why employees resign. By that time, the talent has already left. **RetentionAI** completely inverts this paradigm by shifting HR into a proactive, data-driven framework.
+
+By ingesting raw metrics (like salary, commute distance, stock options, and job satisfaction) from the IBM HR Analytics dataset, this system computes an exact mathematical risk percentage of impending employee resignation. 
+
+More importantly, it provides **Explainable AI**. Instead of a "black box" prediction, the system acts as a Retention Engine, translating the algorithm's coefficients into concrete English recommendations (e.g., "Schedule a career growth 1-on-1", "Review compensation structure").
+
+## 🚀 Key Features
+
+*   **Dual Machine Learning Architecture**: 
+    *   **Baseline API Model:** 88% accurate Logistic Regression model allowing fast, linear, highly explainable real-time inferences.
+    *   **Advanced Analytical Model:** Deep Random Forest algorithm analyzing nonlinear patterns to map exactly which corporate systemic issues are causing attrition.
+*   **Executive Dashboard**: A premium, visually stunning web UI featuring Glassmorphism design aesthetics, allowing non-technical HR leaders to consume AI metrics instantly.
+*   **Batch Roster Processing**: Instead of single entries, executives can drag-and-drop massive `.csv` files into the portal to generate an instant triage list ranking hundreds of employees by flight risk.
+*   **Bank-Grade Security**: Fully guarded via `Flask-Login` session management, utilizing `werkzeug pbkdf2:sha256` password hashing to protect sensitive HR data.
+*   **Persistent Historical Auditing**: Seamless `Flask-SQLAlchemy` (SQLite) integration ensures every single interaction and risk profile is permanently logged for HR auditing and efficacy tracking over time.
 
 ---
 
-## ⚙️ Quick Start Guide
+## 🛠️ Technology Stack
 
-### 1. Installation
-Clone the repository and install dependencies (a virtual environment is highly recommended):
+| Domain | Tools Used |
+| :--- | :--- |
+| **Machine Learning** | `scikit-learn`, `numpy`, `pandas`, `joblib` |
+| **Web Framework** | `Flask`, `Flask-Login`, `Flask-SQLAlchemy` |
+| **Frontend/UI** | `HTML5`, Vanilla CSS, `Chart.js` |
+| **Production/DevOps** | `Gunicorn`, `Docker`, `Pytest`, `GitHub Actions (CI/CD)` |
+
+---
+
+## 🏗️ Architecture & Deployment
+
+This application is rigorously structured to bypass the typical "Jupyter Notebook" data science portfolio standard, instead matching modern software engineering architecture:
+
+1. **Source Code (`src/`)**: Isolated Machine Learning scripts for automated cleaning, preprocessing (`StandardScaler`, `LabelEncoder`), modeling, and evaluation.
+2. **Web API (`app/`)**: Flask route handlers, UI templates, and SQLAlchemy data models.
+3. **CI/CD (`.github/workflows`)**: Automated robot unit testing via Pytest that acts as a secure merge-gate for the repository.
+
+To deploy this yourself (AWS, Render, Heroku): it comes pre-packaged with a `Dockerfile`, a `.dockerignore`, `runtime.txt`, and a `Procfile` configured for the multi-threaded `gunicorn` WSGI server. 
+
+### Local Execution
 ```bash
-git clone https://github.com/MrRenntech/AI-Employee-Retention.git
-cd AI-Employee-Retention
-python -m venv venv
-# Activate the virtual environment:
-# Windows: venv\Scripts\activate
-# Mac/Linux: source venv/bin/activate
+# 1. Install Dependencies
 pip install -r requirements.txt
+
+# 2. Boot up the Database (Creates initial database and Admin account)
+python app/init_db.py
+
+# 3. Launch the Server!
+python -m app.app
 ```
-*For detailed installation requirements, see [Requirements (`docs/REQUIREMENTS.md`)](docs/REQUIREMENTS.md).*
-
-### 2. Model Training (First Run)
-Before booting the dashboard, compile the machine learning artifacts:
-```bash
-# Ensure you are in the project root and then run:
-python src/train_model.py
-```
-*(Generates the serialized model and scaler securely in the `/models` directory).*
-*For detailed instructions on running all aspects of the project, including advanced models, see the complete [How to Run Guide (`docs/HOW_TO_RUN.md`)](docs/HOW_TO_RUN.md).*
-
-### 3. Launching the App
-Start the Flask web server:
-```bash
-python app/app.py
-```
-🌐 **Open your browser and navigate to:** [http://127.0.0.1:5000](http://127.0.0.1:5000)
-
----
-
-## 💡 How It Works
-- **Data Preprocessing**: Categorical features are encoded and numerical features scaled via `StandardScaler` to ensure optimal gradient descent.
-- **Explainability**: The system unpacks model coefficients to pinpoint exactly *why* a specific employee might leave (e.g., *Compensation*, *Distance from Home*, or *Environment Satisfaction*).
-
----
-
-<p align="center">
-  <i>Developed with ❤️ for intelligent HR management.</i>
-</p>
+*Application runs on http://127.0.0.1:5000*
