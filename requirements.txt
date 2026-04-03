@@ -4,3 +4,8 @@ scikit-learn
 matplotlib
 seaborn
 joblib
+Flask
+Flask-Login
+Flask-SQLAlchemy
+pytest
+werkzeug

@@ -1,80 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Employee Retention Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<title>AI Employee Retention Platform</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
-<div class="container wide">
-    <nav class="header-nav">
-        <a href="/" class="brand">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            RetentionAI
-        </a>
-        <div class="header-links">
-            <a href="/" class="active">Predict Risk</a>
-            <a href="/executive">Executive Dashboard</a>
-        </div>
-    </nav>
+<header class="hero">
 
-    <h1>Employee Attrition Risk Engine</h1>
-    <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem; font-size: 1.125rem;">Assess the likelihood of employee turnover using advanced machine learning with 88% accuracy.</p>
+<div class="hero-content">
 
-    <div class="dashboard-grid">
-        <div class="card" style="grid-column: 1 / -1;">
-            <h2>Individual Assessment</h2>
-            <p style="color: var(--text-muted); margin-bottom: 2rem;">Enter individual employee metrics to receive an instant attrition probability and targeted retention strategy.</p>
-            <form action="/predict" method="POST" class="grid-form">
-                {% for feature in [
-                'Age','DailyRate','DistanceFromHome','Education',
-                'EnvironmentSatisfaction','HourlyRate','JobInvolvement',
-                'JobLevel','JobSatisfaction','MonthlyIncome',
-                'MonthlyRate','NumCompaniesWorked','PercentSalaryHike',
-                'PerformanceRating','RelationshipSatisfaction',
-                'StockOptionLevel','TotalWorkingYears',
-                'TrainingTimesLastYear','WorkLifeBalance',
-                'YearsAtCompany','YearsInCurrentRole',
-                'YearsSinceLastPromotion','YearsWithCurrManager'] %}
-                    <div class="form-group">
-                        <label>{{ feature|replace('([A-Z])', ' \\1')|trim }}</label>
-                        <input type="number" name="{{ feature }}" required step="any" placeholder="Enter value">
-                    </div>
-                {% endfor %}
-                
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="margin-right: 8px;" viewBox="0 0 16 16">
-                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                        </svg>
-                        Assess Risk
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-        
-    <div class="card" style="margin-top: 2rem;">
-        <h2>Batch Processing</h2>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">Upload a CSV file containing employee data for bulk risk assessment. This will process your entire roster and rank them by risk level.</p>
-        <form action="/batch" method="POST" enctype="multipart/form-data" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
-            <input type="file" name="file" required accept=".csv" style="flex: 1; max-width: 400px;">
-            <button type="submit" class="btn-secondary">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" style="margin-right: 8px;" viewBox="0 0 16 16">
-                    <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
-                    <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
-                </svg>
-                Upload & Process CSV
-            </button>
-        </form>
-    </div>
-    
+<h1>AI Employee Retention Platform</h1>
+
+<p>
+Predict attrition risk and enable proactive HR decisions
+using machine learning and workforce analytics.
+</p>
+
+<div class="hero-buttons">
+<a href="/executive" class="btn">Executive Dashboard</a>
+<a href="#analysis" class="btn secondary">Run Employee Analysis</a>
 </div>
+
+</div>
+
+</header>
+
+
+<section class="features">
+
+<h2>Platform Capabilities</h2>
+
+<div class="feature-grid">
+
+<div class="feature">
+<h3>Attrition Risk Prediction</h3>
+<p>Identify employees most likely to leave using predictive analytics.</p>
+</div>
+
+<div class="feature">
+<h3>Retention Strategy Engine</h3>
+<p>Get targeted HR actions to retain key employees.</p>
+</div>
+
+<div class="feature">
+<h3>Executive Workforce Insights</h3>
+<p>Monitor organizational risk exposure through executive dashboards.</p>
+</div>
+
+<div class="feature">
+<h3>Batch Workforce Analysis</h3>
+<p>Upload employee datasets to prioritize retention efforts.</p>
+</div>
+
+</div>
+
+</section>
+
+
+<section id="analysis" class="analysis">
+
+<h2>Employee Attrition Assessment</h2>
+
+<form action="/predict" method="POST">
+
+<div class="form-grid">
+
+{% for feature in [
+'Age','DailyRate','DistanceFromHome','Education',
+'EnvironmentSatisfaction','HourlyRate','JobInvolvement',
+'JobLevel','JobSatisfaction','MonthlyIncome',
+'MonthlyRate','NumCompaniesWorked','PercentSalaryHike',
+'PerformanceRating','RelationshipSatisfaction',
+'StockOptionLevel','TotalWorkingYears',
+'TrainingTimesLastYear','WorkLifeBalance',
+'YearsAtCompany','YearsInCurrentRole',
+'YearsSinceLastPromotion','YearsWithCurrManager'] %}
+
+<div>
+<label>{{feature}}</label>
+<input type="number" name="{{feature}}" required>
+</div>
+
+{% endfor %}
+
+</div>
+
+<button type="submit" class="btn">Run Risk Analysis</button>
+
+</form>
+
+</section>
+
+<footer>
+
+<p>AI Employee Retention Analytics Platform</p>
+
+</footer>
 
 </body>
 </html>

@@ -17,10 +17,15 @@
     *   Implemented `/batch` route for CSV upload processing.
     *   Added logic for retention recommendations based on top risk factors.
 10. **Frontend Implementation**:
-20.     *   Created `index.html` with a beautiful hero layout and modern inputs.
-21.     *   Created `result.html` to clearly visualize risk probability and actionable recommendations.
-22.     *   Created `batch_result.html` to display a beautiful responsive data table.
-23.     *   Created `executive.html` to generate an organization-level statistical breakdown.
-24.     *   Added `style.css` using a premium CSS design system (glassmorphism, soft shadows, inter font).
-25. 11. **Verification**: Validated application functionality by running `python app/app.py` and checking the frontend.
-26. 12. **Documentation Update**: Updated `README.md`, `SUMMARY.md`, and other docs to log accuracy and UI changes.
+    *   Created `index.html` with a beautiful hero layout and modern inputs.
+    *   Created `result.html` to clearly visualize risk probability and actionable recommendations.
+    *   Created `batch_result.html` to display a beautiful responsive data table.
+    *   Created `executive.html` to generate an organization-level statistical breakdown.
+    *   Added `style.css` using a premium CSS design system (glassmorphism, soft shadows, inter font).
+11. **Verification**: Validated application functionality by running `python app/app.py` and checking the frontend.
+12. **Documentation Update**: Updated `README.md`, `SUMMARY.md`, and other docs to log accuracy and UI changes.
+
+## Phase 3: Future Goals (Pending)
+13. **Authentication**: Implement a secure login portal for HR Executives.
+14. **Database Expansion**: Integrate a relational database (PostgreSQL/MySQL) to track historical predictions instead of relying purely on real-time CSV evaluation.
+15. **Continuous Integration**: Implement a CI/CD pipeline and write unit tests for the ML pipeline.

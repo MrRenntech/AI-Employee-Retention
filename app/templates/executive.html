@@ -5,55 +5,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Executive Attrition Dashboard - RetentionAI</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <div class="container wide">
-        <nav class="header-nav">
-            <a href="/" class="brand">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                RetentionAI
-            </a>
-            <div class="header-links">
-                <a href="/">Predict Risk</a>
-                <a href="/executive" class="active">Executive Dashboard</a>
+    <header class="hero" style="padding: 60px 20px;">
+        <div class="hero-content">
+            <h1>Executive Attrition Report</h1>
+            <p style="font-size: 18px;">Holistic view of organizational attrition risk and systemic drivers.</p>
+            <div class="hero-buttons">
+                <button onclick="window.print()" class="btn">Generate PDF Report</button>
+                <a href="/" class="btn secondary">Back to Prediction Forms</a>
             </div>
-        </nav>
+        </div>
+    </header>
 
-        <h1>Executive Overview</h1>
-        <p style="text-align: center; color: var(--text-muted); margin-bottom: 3rem;">Holistic view of organizational attrition risk.</p>
+    <div class="dashboard-container">
 
+        <div style="text-align: center; margin-bottom: 40px;">
+            <p style="font-size: 16px; font-weight: bold; color: #555; text-transform: uppercase; letter-spacing: 2px;">Organizational KPI</p>
+            <h2 style="font-size: 64px; margin: 10px 0; color: #1f3c88;">{{ workforce_score }} <span style="font-size: 24px; color: #777;">/ 100</span></h2>
+            <p style="font-size: 20px; font-weight: bold;">Workforce Stability Score</p>
+            <p style="color: {{ '#e74c3c' if workforce_score < 70 else '#2ecc71' }}; font-weight: bold; margin-top: 10px;">
+                {{ "High Risk Exposure" if workforce_score < 70 else "Healthy Stability" }}
+            </p>
+        </div>
+
+        <div class="summary-cards">
         <div class="summary-cards">
             <div class="card">
                 <h3>Total Employees</h3>
                 <p class="metric">{{ total }}</p>
-                <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">Analyzed from dataset</p>
+                <p style="color: #777; font-size: 14px; margin-top: 5px;">Analyzed from dataset</p>
             </div>
 
-            <div class="card {{ 'high' if high_risk > 0 else 'low' }}">
+            <div class="card {{ 'high-risk' if high_risk > 0 else 'low-risk' }}">
                 <h3>High Risk Employees</h3>
                 <p class="metric">{{ high_risk }}</p>
-                <p style="color: inherit; font-size: 0.875rem; margin-top: 0.5rem; opacity: 0.8;">Require immediate intervention</p>
+                <p style="color: #777; font-size: 14px; margin-top: 5px;">Require immediate intervention</p>
             </div>
 
             <div class="card">
                 <h3>Average Risk Level</h3>
                 <p class="metric">{{ avg_risk }}%</p>
-                <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem;">Across organization</p>
+                <p style="color: #777; font-size: 14px; margin-top: 5px;">Across organization</p>
+            </div>
+        </div>
+
+        <!-- CHARTS ROW -->
+        <div class="chart-grid">
+            <div class="chart-card">
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="riskDistribution"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="riskHistogram"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="card" style="grid-column: span 2;">
+                <h3 style="color: #1f3c88; text-align: center; margin-bottom: 20px;">Department Risk Exposure</h3>
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="departmentChart"></canvas>
+                </div>
             </div>
         </div>
 
         <div class="dashboard-grid">
             <div class="card">
-                <h2 style="display: flex; align-items: center; gap: 0.5rem;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="var(--primary)" viewBox="0 0 16 16">
+                <h2 style="display: flex; align-items: center; gap: 10px; color: #1f3c88; margin-bottom: 20px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#1f3c88" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
                     </svg>
                     Top Systemic Risk Drivers
                 </h2>
-                <ul class="feature-list" style="margin-top: 1.5rem;">
+                <ul class="feature-list">
                     {% for driver in top_drivers %}
                     <li>{{ driver }}</li>
                     {% endfor %}
@@ -61,12 +91,12 @@
             </div>
 
             <div class="card" style="display: flex; flex-direction: column; justify-content: center;">
-                <h2 style="color: var(--primary);">Strategic Guidance</h2>
-                <p style="font-size: 1.125rem;">
+                <h2 style="color: #1f3c88; margin-bottom: 20px;">Strategic Guidance</h2>
+                <p style="font-size: 16px; color: #444; line-height: 1.6;">
                     Focus comprehensive retention initiatives on high-risk personnel, specifically targeting
                     the dominant systemic drivers. Recommended prioritized actions include:
                 </p>
-                <ul style="color: var(--text-muted); line-height: 1.8; margin-top: 0.5rem;">
+                <ul style="color: #666; line-height: 1.8; margin-top: 15px; padding-left: 20px;">
                     <li>Competitive compensation reviews</li>
                     <li>Managerial and team engagement workshops</li>
                     <li>Defined career growth pathways</li>
@@ -74,21 +104,118 @@
             </div>
         </div>
 
-        <div class="card" style="padding: 0; overflow: hidden; margin-top: 2rem;">
-            <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin: 0; font-size: 1.25rem;">Critical Priority Roster</h2>
-                <span style="font-size: 0.875rem; color: var(--danger-text); background: var(--danger-bg); padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 500;">Top 10 Highest Risk</span>
+        <div class="dashboard-grid">
+            <!-- DEPARTMENT TABLE -->
+            <div class="data-table-container" style="margin-top: 0;">
+                <div style="padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: white;">
+                    <h2 style="margin: 0; font-size: 20px; color: #1f3c88;">Department Breakdown</h2>
+                </div>
+                <div style="width: 100%; overflow-x: auto;">
+                    {{ department_table|safe }}
+                </div>
             </div>
-            <div class="table-responsive" style="border: none; border-radius: 0;">
-                {{ table|safe }}
+
+            <!-- PRIORITY TABLE -->
+            <div class="data-table-container" style="margin-top: 0;">
+                <div style="padding: 20px 30px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: white;">
+                    <h2 style="margin: 0; font-size: 20px; color: #1f3c88;">Employee Retention Priority</h2>
+                    <span style="font-size: 14px; color: white; background: #e74c3c; padding: 4px 12px; border-radius: 20px; font-weight: bold;">Top {{ "10" }} Highest Risk</span>
+                </div>
+                <div style="width: 100%; overflow-x: auto;">
+                    {{ table|safe }}
+                </div>
             </div>
         </div>
 
-        <div class="actions" style="margin-top: 3rem; margin-bottom: 2rem;">
-            <a href="/executive" class="btn-primary">Analyze New Dataset</a>
+        <div class="actions" style="margin-top: 40px; margin-bottom: 40px; text-align: center;">
+            <a href="/executive" class="btn">Analyze New Dataset</a>
         </div>
 
     </div>
 
+    <!-- Chart.js Injection -->
+    <script>
+        // Data injected from Flask
+        const distData = {{ risk_distribution | tojson }};
+        const deptData = {{ department_chart_data | tojson }};
+
+        // 1. Distribution Donut Chart (User Requested Spec)
+        const riskChart = new Chart(
+            document.getElementById('riskDistribution'),
+            {
+                type: 'doughnut',
+                data: {
+                    labels: ['High Risk','Low Risk'],
+                    datasets: [{
+                        data: [{{ high_risk }}, {{ total - high_risk }}],
+                        backgroundColor: ['#e74c3c','#2ecc71'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: { display: true, text: 'Attrition Risk Distribution', font: {size: 16, color: '#1f3c88'} },
+                        legend: { position: 'bottom' }
+                    }
+                }
+            }
+        );
+
+        // 2. Risk Probability Histogram (User Requested Spec)
+        const histogram = new Chart(
+            document.getElementById('riskHistogram'),
+            {
+                type:'bar',
+                data:{
+                    labels:['0-20%','20-40%','40-60%','60-80%','80-100%'],
+                    datasets:[{
+                        label:'Employee Count',
+                        data:{{ histogram_data }},
+                        backgroundColor:'#1f3c88',
+                        borderRadius: 4
+                    }]
+                },
+                options:{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins:{
+                        title: { display:true, text:'Attrition Probability Distribution', font: {size: 16, color: '#1f3c88'} },
+                        legend: { display: false }
+                    }
+                }
+            }
+        );
+
+        // 2. Department Risk Bar Chart
+        const ctxDept = document.getElementById('departmentChart').getContext('2d');
+        new Chart(ctxDept, {
+            type: 'bar',
+            data: {
+                labels: deptData.labels,
+                datasets: [{
+                    label: 'High Risk %',
+                    data: deptData.data,
+                    backgroundColor: '#1f3c88',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { callback: function(value) { return value + "%" } }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

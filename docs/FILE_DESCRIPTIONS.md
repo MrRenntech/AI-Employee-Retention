@@ -15,6 +15,11 @@ This document explains the purpose and functionality of each file in the project
         *   Accepts JSON data representing an employee.
         *   Returns JSON or renders HTML templates with Attrition Risk (High/Low), Probability, Top Risk Factors, and Recommended Actions.
     * **Frontend Files** (`app/static/`, `app/templates/`): Implements an advanced, high-contrast, modern responsive UI.
+        *   `index.html`: The main landing page for single employee risk assessment.
+        *   `result.html`: Displays the single prediction result with interventions.
+        *   `batch_result.html`: Displays the tabular results of a CSV batch upload.
+        *   `executive_upload.html`: The upload screen for the executive data batch processing.
+        *   `executive.html`: The comprehensive high-level dashboard with charts and aggregate metrics for HR leadership.
 
 ## `src/` (Source Code)
 *   **`data_preprocessing.py`**:

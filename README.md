@@ -18,14 +18,16 @@
 ---
 
 ## 🚀 Project Overview
-RetentionAI transforms raw HR metrics into clear, actionable intelligence. It utilizes an **88% accurate** Logistic Regression machine learning model integrated into a meticulously designed, beautiful Flask web interface. The system identifies high-risk employees instantly and suggests tailored retention strategies based on individual risk drivers.
+RetentionAI transforms raw HR metrics into clear, actionable intelligence. It utilizes an **88% accurate** Logistic Regression machine learning model (baseline) and an Advanced Random Forest model integrated into a meticulously designed, beautiful Flask web interface. The system identifies high-risk employees instantly and suggests tailored retention strategies based on individual risk drivers.
 
 ## ✨ Key Features
-- 🧠 **Precision Machine Learning**: Achieves an **88% baseline accuracy** (93% F1-score for retention) trained on rigorous IBM HR Analytics data.
+- 🧠 **Precision Machine Learning**: Achieves an **88% baseline accuracy** (93% F1-score for retention) with Logistic Regression, and supports an advanced Random Forest model for non-linear feature analysis.
 - 💎 **Premium Web Dashboard**: A stunning, modern UI built with custom CSS, glassmorphism, responsive data grids, and smooth animations.
 - 🎯 **Individual Assessments**: Predict a single employee's risk instantly by inputting metrics directly into the aesthetic form.
 - 🗂️ **Batch Processing Engine**: Upload organizational `.csv` rosters to dynamically rank hundreds of employees by attrition probability.
 - 📊 **Executive Dashboard**: A sleek high-level overview detailing aggregate risk distributions and systemic organizational drivers.
+
+For full details on the machine learning models and performance metrics, please read the [Project Summary (`docs/SUMMARY.md`)](docs/SUMMARY.md).
 
 ---
 
@@ -42,25 +44,33 @@ employee-attrition-ai/
 ├── notebooks/              # 📓 Jupyter notebooks for EDA
 └── src/                    # 🛠️ Data pipeline and Training scripts
 ```
+*For a detailed breakdown of every file, please refer to [File Descriptions (`docs/FILE_DESCRIPTIONS.md`)](docs/FILE_DESCRIPTIONS.md).*
 
 ---
 
 ## ⚙️ Quick Start Guide
 
 ### 1. Installation
-Clone the repository and install dependencies:
+Clone the repository and install dependencies (a virtual environment is highly recommended):
 ```bash
 git clone https://github.com/MrRenntech/AI-Employee-Retention.git
 cd AI-Employee-Retention
+python -m venv venv
+# Activate the virtual environment:
+# Windows: venv\Scripts\activate
+# Mac/Linux: source venv/bin/activate
 pip install -r requirements.txt
 ```
+*For detailed installation requirements, see [Requirements (`docs/REQUIREMENTS.md`)](docs/REQUIREMENTS.md).*
 
 ### 2. Model Training (First Run)
 Before booting the dashboard, compile the machine learning artifacts:
 ```bash
+# Ensure you are in the project root and then run:
 python src/train_model.py
 ```
 *(Generates the serialized model and scaler securely in the `/models` directory).*
+*For detailed instructions on running all aspects of the project, including advanced models, see the complete [How to Run Guide (`docs/HOW_TO_RUN.md`)](docs/HOW_TO_RUN.md).*
 
 ### 3. Launching the App
 Start the Flask web server:

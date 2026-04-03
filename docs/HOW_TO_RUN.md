@@ -12,14 +12,25 @@ Open your terminal (Command Prompt or PowerShell) and navigate to the project ro
 cd "e:\Projects\AI Employee\employee-attrition-ai"
 ```
 
-Install the required Python packages:
+**Highly Recommended: Create a Virtual Environment**
+Creating a virtual environment isolates your project dependencies from other Python installations on your system.
+```bash
+python -m venv venv
+```
+
+**Activate the Virtual Environment:**
+*   **Windows (PowerShell):** `.\venv\Scripts\Activate.ps1`
+*   **Windows (Command Prompt):** `.\venv\Scripts\activate.bat`
+*   **Mac/Linux (Bash):** `source venv/bin/activate`
+
+Once activated (you should see `(venv)` in your prompt), install the required Python packages:
 ```bash
 pip install -r requirements.txt
 ```
 
 ## Step 2: Prepare the Data
 Ensure the dataset exists at `data/employee_attrition.csv`.
-*   If missing, download the **IBM HR Analytics Employee Attrition Dataset**.
+*   If missing, download the **IBM HR Analytics Employee Attrition Dataset** and place it there.
 
 ## Step 3: Train the Model
 Run the training script to preprocess data, train the Logistic Regression model, and save the artifacts (`attrition_model.pkl` and `scaler.pkl`).
@@ -40,6 +51,8 @@ set PYTHONPATH=src && python src/train_model.py
 ```bash
 PYTHONPATH=src python src/train_model.py
 ```
+
+*Troubleshooting*: If you still encounter `ModuleNotFoundError: No module named 'src'`, ensure you are actively running the command from the root folder (`employee-attrition-ai`) and not from within `src` itself.
 
 Expected Output:
 ```
