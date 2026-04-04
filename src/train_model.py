@@ -15,7 +15,7 @@ from data_preprocessing import load_and_preprocess
 # 1. Load and preprocess the dataset
 # This returns the scaled features, target variable, the fitted scaler, and the feature names.
 X, y, scaler, feature_names = load_and_preprocess(
-    "data/employee_attrition.csv"
+    "data/ibm_dataset.csv"
 )
 
 # 2. Split the data into training and testing sets

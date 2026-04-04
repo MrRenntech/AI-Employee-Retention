@@ -27,8 +27,8 @@ employee-attrition-ai/
 │   └── models.py               # Defines how "Users" and "Prediction Logs" are stored.
 │
 ├── data/                       # Contains our Spreadsheets
-│   ├── employee_attrition.csv  # IBM HR Dataset (Base Reality Data)
-│   └── fake_employee_dataset.csv # 2000 fake humans generated for safe testing
+│   ├── ibm_dataset.csv  # IBM HR Dataset (Base Reality Data)
+│   └── company_dataset.csv # 2000 fake humans generated for safe testing
 │
 ├── docs/                       # The Documentation Library (You are here!)
 │   ├── DEVELOPMENT_STEPS.md    

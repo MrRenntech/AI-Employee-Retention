@@ -13,6 +13,20 @@
 
 </div>
 
+## 🎤 Presentation & Deep Dive Materials
+
+We have constructed a comprehensive suite of presentation-ready documents designed to explain exactly how this system works, from high-level business value to deep architectural decisions. If you are presenting this project, read through the `docs/` folder in this exact order:
+
+1. **[Executive Summary / Pitch Script](docs/SUMMARY.md)**: Start here. The "Why" and the "What." Designed to be read aloud as an executive pitch outlining ROI and core business logic.
+2. **[Live Demo Guide](docs/HOW_TO_RUN.md)**: A step-by-step instructional script on how to flawlessly execute the application during a live presentation.
+3. **[FAQ & Q/A Bank](docs/FAQ_AND_QA_BANK.md)**: Keep this open during your presentation. It contains detailed answers to anticipated audience questions regarding bias, security, and next steps.
+4. **[Architecture & Technology Manifesto](docs/ARCHITECTURE_AND_TECH.md)**: The deep-dive into the "How." Explains exactly why tools like Flask, SQLite, and Scikit-Learn were chosen over alternatives.
+5. **[File Descriptions & Logic Flow](docs/FILE_DESCRIPTIONS.md)**: Explains the internal circuitry of the codebase.
+6. **[Project Directory Tree](docs/PROJECT_TREE.md)**: A visual representation of folder structures.
+7. **[Development Steps & History](docs/DEVELOPMENT_STEPS.md)**: A chronological log of how the system was built.
+
+---
+
 ## 🌐 Live Application
 The fully functional production application is currently live on Render:
 👉 **[Access RetentionAI Here](https://ai-employee-retention.onrender.com/)**
@@ -20,13 +34,6 @@ The fully functional production application is currently live on Render:
 *(For security and system health, the app requires authentication. If deployed locally, you can initialize the DB using `python app/init_db.py` to generate the default `admin`/`password` account.)*
 
 ---
-
-## 📖 Project Overview
-Traditional HR systems rely on reactive measures—like exit interviews—to understand why employees resign. By that time, the talent has already left. **RetentionAI** completely inverts this paradigm by shifting HR into a proactive, data-driven framework.
-
-By ingesting raw metrics (like salary, commute distance, stock options, and job satisfaction) from the IBM HR Analytics dataset, this system computes an exact mathematical risk percentage of impending employee resignation. 
-
-More importantly, it provides **Explainable AI**. Instead of a "black box" prediction, the system acts as a Retention Engine, translating the algorithm's coefficients into concrete English recommendations (e.g., "Schedule a career growth 1-on-1", "Review compensation structure").
 
 ## 🚀 Key Features
 
@@ -36,7 +43,7 @@ More importantly, it provides **Explainable AI**. Instead of a "black box" predi
 *   **Executive Dashboard**: A premium, visually stunning web UI featuring Glassmorphism design aesthetics, allowing non-technical HR leaders to consume AI metrics instantly.
 *   **Batch Roster Processing**: Instead of single entries, executives can drag-and-drop massive `.csv` files into the portal to generate an instant triage list ranking hundreds of employees by flight risk.
 *   **Bank-Grade Security**: Fully guarded via `Flask-Login` session management, utilizing `werkzeug pbkdf2:sha256` password hashing to protect sensitive HR data.
-*   **Persistent Historical Auditing**: Seamless `Flask-SQLAlchemy` (SQLite) integration ensures every single interaction and risk profile is permanently logged for HR auditing and efficacy tracking over time.
+*   **Persistent Historical Auditing**: Seamless `Flask-SQLAlchemy` (SQLite) integration ensures every single interaction and risk profile is permanently logged for HR auditing.
 
 ---
 
@@ -48,28 +55,3 @@ More importantly, it provides **Explainable AI**. Instead of a "black box" predi
 | **Web Framework** | `Flask`, `Flask-Login`, `Flask-SQLAlchemy` |
 | **Frontend/UI** | `HTML5`, Vanilla CSS, `Chart.js` |
 | **Production/DevOps** | `Gunicorn`, `Docker`, `Pytest`, `GitHub Actions (CI/CD)` |
-
----
-
-## 🏗️ Architecture & Deployment
-
-This application is rigorously structured to bypass the typical "Jupyter Notebook" data science portfolio standard, instead matching modern software engineering architecture:
-
-1. **Source Code (`src/`)**: Isolated Machine Learning scripts for automated cleaning, preprocessing (`StandardScaler`, `LabelEncoder`), modeling, and evaluation.
-2. **Web API (`app/`)**: Flask route handlers, UI templates, and SQLAlchemy data models.
-3. **CI/CD (`.github/workflows`)**: Automated robot unit testing via Pytest that acts as a secure merge-gate for the repository.
-
-To deploy this yourself (AWS, Render, Heroku): it comes pre-packaged with a `Dockerfile`, a `.dockerignore`, `runtime.txt`, and a `Procfile` configured for the multi-threaded `gunicorn` WSGI server. 
-
-### Local Execution
-```bash
-# 1. Install Dependencies
-pip install -r requirements.txt
-
-# 2. Boot up the Database (Creates initial database and Admin account)
-python app/init_db.py
-
-# 3. Launch the Server!
-python -m app.app
-```
-*Application runs on http://127.0.0.1:5000*

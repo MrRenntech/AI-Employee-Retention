@@ -26,7 +26,7 @@ def suggest_interventions(employee_row, feature_names):
     
     return interventions
 
-def analyze_retention_risk(data_path="data/employee_attrition.csv", sample_size=5):
+def analyze_retention_risk(data_path="data/ibm_dataset.csv", sample_size=5):
     X, y, scaler, feature_names = load_and_preprocess(data_path)
     model, _ = load_artifacts()
 

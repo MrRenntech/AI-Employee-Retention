@@ -8,7 +8,7 @@ from sklearn.metrics import accuracy_score, classification_report
 from data_preprocessing import load_and_preprocess
 
 # Load and preprocess data
-X, y, scaler, feature_names = load_and_preprocess("data/employee_attrition.csv")
+X, y, scaler, feature_names = load_and_preprocess("data/ibm_dataset.csv")
 
 # Split data
 X_train, X_test, y_train, y_test = train_test_split(

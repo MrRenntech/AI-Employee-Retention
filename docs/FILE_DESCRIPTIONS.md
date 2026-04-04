@@ -1,73 +1,31 @@
-# Project File Descriptions 📂
+# 📂 File Flow & Descriptions
 
-Welcome to the heart of the project! This document serves as your ultimate guide to understanding what every single file in this project does. Think of it as the blueprints to a finely tuned machine.
-
----
-
-## The Root Folder (Where Everything Starts)
-These files sit at the base of the folder and prepare the environment before any code runs.
-
-*   `requirements.txt`: This is our grocery list! It tells Python exactly which external libraries it needs to download to make our code work (like `pandas` for data or `Flask` for the website).
-*   `README.md`: The cover page of our project. It rapidly explains what the project is, what it looks like, and why it's important. 
+*(Instructions for Presenter: Ensure you understand how files interconnect. This guide details exactly HOW data moves through the project tree.)*
 
 ---
 
-## `app/` (The Web Portal)
-This folder holds everything needed to power the website that HR executives will click on and interact with.
+## 1. The Entry Point: Web Architecture (`app/`)
+This module commands the user interface.
 
-*   **`app.py`**: The Brain of the Website. 
-    *   It wakes up the Flask web server.
-    *   It links up your web browser to the actual Machine Learning models in the background.
-    *   It securely checks your username and password when you log in.
-    *   It accepts employee data, asks the AI model "will they quit?", and routes the answer back to your screen.
-*   **`init_db.py`**: The Builder. If you run this file, it creates a blank, fresh database inside our project and inserts a default "admin" account so you can log into the website.
-*   **`models.py`**: The Database Blueprint (Powered by SQLAlchemy). It explicitly defines what our data looks like when saved to the hard drive. It defines two things:
-    1.  The `User` table (who is allowed to log in).
-    2.  The `PredictionLog` table (a giant history book recording every time you run an AI prediction).
+*   **`app/app.py`**: The Central Nervous System. It boots the Flask Web Server, manages login sessions, reads form/CSV data, dynamically loads `models/attrition_model.pkl` to fetch predictions, and injects the results back to the user interface.
+*   **`app/models.py`**: The Database Blueprint (SQLAlchemy). It structures exactly how HR Users and Prediction Audit Logs are securely formatted for the database.
+*   **`app/init_db.py`**: The Initializer. Run this script once to mint the database architecture and generate your secure Admin login.
+*   **`app/templates/*.html`**: The UI rendering engines (Index, Results, Executive Dashboards).
+*   **`app/static/style.css`**: The premium styling components.
 
-### `app/templates/` (The Visual Screens)
-These are the HTML files that create the actual web pages you see.
-*   `login.html`: The secure entry page demanding a username and password.
-*   `index.html`: The main dashboard page asking if you want to analyze a single employee or upload a giant CSV spreadsheet.
-*   `result.html`: Shows the risk of a *single* employee, complete with tailor-made advice on how to keep them.
-*   `batch_result.html`: Displays a massive, scrollable table ranking hundreds of employees by their risk after a CSV upload.
-*   `executive.html`: The beautiful, high-level screen with charts (like total risk distribution and department breakdowns) for the executives to stare at.
-*   `executive_upload.html`: A tiny helper screen to drop the CSV file into the executive dashboard.
-*   `history.html`: A table displaying past AI predictions saved securely in our SQLite database.
+## 2. The Data Science Engine (`src/`)
+This module operates strictly behind the scenes to train the models *before* the web application ever runs.
 
-### `app/static/` (The Paintjob)
-*   `style.css`: All the colors, animations, shadows, and fonts that make our website look extremely expensive and premium (using modern "glassmorphism" design).
+*   **`src/data_preprocessing.py`**: The Data Sanitizer. It digests messy HR CSV data, removes noise, mathematically normalizes scales (using `StandardScaler`), and encodes text (using `LabelEncoder`).
+*   **`src/train_model.py`**: The Machine Learning Factory. It pushes cleaned data through a Logistic Regression algorithm, tuning the math until accuracy reaches 88%. It saves this optimal "brain" as `attrition_model.pkl`.
+*   **`src/train_model_rf.py`**: The deep-analyzer that builds a Random Forest model.
+*   **`src/retention_engine.py`**: The Translator. Maps raw AI coefficients to actionable English commands (e.g. mapping "high commute distance" to "Provide flexible work hours").
+*   **`src/generate_fake_dataset.py`**: A simulator generating thousands of synthetic, randomized testing profiles (`ai_based_dataset.csv`).
 
----
+## 3. The Security & Validation Modules (`tests/` & `.github/`)
+*   **`tests/test_model.py` & `tests/test_app.py`**: Programmed QA bots that stress-test both the models and the web endpoints to ensure the code remains stable.
+*   **`.github/workflows/ci.yml`**: The invisible cloud engineer. When code is pushed to the repo, it boots a dedicated Linux server to run all the tests above, blocking failing code immediately.
 
-## `src/` (The Data Science Engine)
-This is the math powerhouse. These scripts train the AI BEFORE the website even launches.
-
-*   **`data_preprocessing.py`**: The Cleaner. It takes raw, messy HR data, turns words into numbers (since AI only speaks math), and squishes all numbers to be on exactly the same scale (so a $10,000 salary doesn't overwhelm a 5-year tenure).
-*   **`train_model.py`**: The Teacher (Baseline Model). It feeds our cleaned data into a `Logistic Regression` algorithm. It tests the algorithm until it reaches 88% accuracy, and then saves it to a file.
-*   **`train_model_rf.py`**: The Advanced Teacher. It trains a more complex `Random Forest` algorithm capable of seeing hidden patterns and calculating exactly *which* factors (like Salary vs Boss) cause the most attrition.
-*   **`evaluate_model.py`**: The Grader. It double checks the models' homework and prints out a "Report Card" detailing exact accuracies and errors.
-*   **`retention_engine.py`**: The Strategist. A script that marries the predictions to actual English sentences (e.g. "Fix this employee's work-life balance!").
-*   **`generate_fake_dataset.py`**: The Simulator. It generates a massive spreadsheet of 2,000 completely fake employees just so we have something to safely test our application with!
-
----
-
-## `tests/` (The Automated QA Robots)
-These files act as robot testers built using `pytest`. 
-*   **`test_model.py`**: Checks that our trained AI brains (`.pkl` files) actually exist and work on the hard drive before we try to load them.
-*   **`test_app.py`**: Checks that the website is alive. It literally pretends to be a user, clicks the login button, and makes sure the website responds correctly instead of crashing.
-
----
-
-## `.github/workflows/` (The CI/CD Factory)
-*   **`ci.yml`**: A set of remote commands. Every time you push Code to GitHub, this file tells GitHub to automatically boot up a Linux computer, install Python, and run the `tests/` folder to make absolutely sure you didn't break the project with your newest code.
-
----
-
-## `data/` and `models/` (The Storage Lockers)
-*   `data/employee_attrition.csv`: The Excel/CSV files filled with employee rows.
-*   `models/attrition_model.pkl`: The saved "Brain" of our AI. By saving it here, the website doesn't need to re-learn everything every time it turns on.
-*   `models/scaler.pkl`: The saved mathematical ruler that ensures all new data is properly squished before entering the brain. 
-*   `models/rf_model.pkl`: The advanced Random Forest brain.
-
-And that's everything! Every file works together in perfect harmony.
+## 4. The Assets (`data/` & `models/`)
+*   **`data/`**: Holds CSV files. `ibm_dataset.csv` is the initial training ground, while `ai_based_dataset.csv` acts as our high-speed batch testing group.
+*   **`models/`**: The Serialized output folder. Files like `attrition_model.pkl` reside here so they can be instantaneously loaded by the server without re-training.

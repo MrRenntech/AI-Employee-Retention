@@ -5,12 +5,17 @@ This Flask application serves as the production interface for the employee attri
 It provides a web interface for HR personnel to perform both individual and batch risk assessments,
 along with an executive dashboard for organization-wide attrition metrics.
 """
+import sys
+import os
+
+# Ensure the root directory is in the python path to prevent app/ module collision
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 import joblib
 import numpy as np
 import pandas as pd
-import os
 import json
 from datetime import datetime
 

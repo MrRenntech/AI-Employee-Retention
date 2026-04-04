@@ -2,7 +2,7 @@ import joblib
 from sklearn.metrics import classification_report, confusion_matrix
 from data_preprocessing import load_and_preprocess
 
-X, y, _, _ = load_and_preprocess("data/employee_attrition.csv")
+X, y, _, _ = load_and_preprocess("data/ibm_dataset.csv")
 
 model = joblib.load("models/attrition_model.pkl")
 

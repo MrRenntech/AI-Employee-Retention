@@ -1,74 +1,48 @@
-# The Ultimate Guide: How to Run This Project 🚀
+# 🚀 Live Demo & Presentation Guide
 
-This guide assumes you know nothing about programming. By following these steps exactly, you will turn your computer into an advanced AI server running the RetentionAI platform!
-
----
-
-## Step 1: Prepare Your Computer
-1. You must have **Python 3.8** (or higher) installed on your computer.
-2. Open your terminal (Command Prompt for Windows, or Terminal for Mac).
-3. Type this command to move perfectly into the project folder:
-```bash
-cd "e:\Projects\AI Employee\employee-attrition-ai"
-```
-
-## Step 2: Download the Tools (Libraries)
-Your computer needs to download the math and website tools required to run the AI.
-1. Run this command:
-```bash
-pip install -r requirements.txt
-```
-*(Wait until it finishes downloading things like Flask, Pandas, and Scikit-Learn).*
-
-## Step 3: Initialize the Secure Database (First Time Only) 🔒
-The website is securely locked so random people can't see HR files. We need to create a database and an Admin account.
-1. Run this command:
-```bash
-python app/init_db.py
-```
-2. You will see a success message saying: "Default admin user created". 
-   - **Your Username is:** `admin`
-   - **Your Password is:** `password`
-
-## Step 4: Boot up the Application! 🌐
-Now we turn the engine on.
-1. Run this command:
-```bash
-python app/app.py
-```
-2. The terminal will eventually say something like: `Running on http://127.0.0.1:5000`
-3. **Open Google Chrome or Safari.**
-4. In the address bar at the top, type exactly: `http://127.0.0.1:5000` and press Enter.
-
-You are now looking at the login screen! Enter your admin/password credentials from Step 3, and enjoy the dashboard.
+*(Instructions for Presenter: Follow this script step-by-step to execute a flawless live demonstration of the software during your presentation.)*
 
 ---
 
-## (Optional) Advanced Data Science Steps
+## Part 1: Booting Up (Do this BEFORE presenting)
+1. Ensure you have Python installed.
+2. Open your terminal and navigate to the project root:
+   ```bash
+   cd e:\Projects\AI Employee\employee-attrition-ai
+   ```
+3. *(If you haven't yet, initialize the database)*
+   ```bash
+   python app/init_db.py
+   ```
+4. Start the Application Server:
+   ```bash
+   python -m app.app
+   ```
+5. Open your web browser and load: `http://127.0.0.1:5000`
 
-If you want to poke around the actual Machine Learning pipeline rather than just the website, here is how.
+---
 
-### Testing the Codebase (Quality Assurance)
-Want to prove everything is working securely without crashing? We wrote robot testers!
-```bash
-python -m pytest tests/
-```
-This deploys invisible bots that test the login systems and the ML models, returning green passing marks if the code is healthy.
+## Part 2: The Live Presentation Script
 
-### Retraining the AI Brains (If you get new data)
-If your company gets thousands of new employees next year, the AI needs to relearn the new patterns.
-1. Ensure your new spreadsheet is at `data/employee_attrition.csv`.
-2. Run the baseline training algorithm (this saves `attrition_model.pkl`):
-```bash
-python src/train_model.py
-```
-3. Run the advanced Random Forest algorithm (to recalculate what specific factors are driving people to quit the most):
-```bash
-python src/train_model_rf.py
-```
+### 1. The Welcome & Login
+*   **Action**: Show the Login Screen.
+*   **Script**: *"Welcome to the RetentionAI secure portal. Because HR data is incredibly sensitive, the entire application sits behind a secure Flask-Login wall. I'm going to log in with our encrypted Admin credentials."*
+*   **Action**: Enter `admin` / `password` and hit Login.
 
-### Automatic Text-Based Advice Engine
-If you don't want to use the beautiful website, you can run an invisible text engineer that simply prints advice to the terminal:
-```bash
-python src/retention_engine.py
-```
+### 2. Individual Assessment Demonstration
+*   **Action**: Land on the main Assessment Dashboard.
+*   **Script**: *"As you can see, the UI is built entirely for executives—clean, modern, and intuitive. Let's say I'm a manager and I have a bad feeling about a specific employee."*
+*   **Action**: Fill out the Single Employee Form with high-risk metrics (Low Salary, Low Satisfaction, High Commute). Click Predict.
+*   **Script**: *"Instead of guessing, the AI instantly computes their exact mathematical flight risk. More importantly, it explains the underlying causes and prescribes an actionable, English-language retention strategy."*
+
+### 3. The Batch Roster Upload (The "Wow" Moment)
+*   **Action**: Navigate back to the Dashboard. Click the "Batch Assessment" tab.
+*   **Script**: *"Now, analyzing one person is great, but companies have thousands of employees. Our tool allows complete scale."*
+*   **Action**: Open your file explorer. Drag and drop the `data/ai_based_dataset.csv` file into the portal.
+*   **Script**: *"I'm uploading our test roster now. The AI is vectorizing thousands of data points..."*
+*   **Action**: Show the massive sorted output table.
+*   **Script**: *"In less than a second, it has analyzed the entire spreadsheet and generated an emergency triage list. The leadership team can immediately prioritize those ranking at 85%+ risk."*
+
+### 4. Executive View & History
+*   **Action**: Click on the "Executive Dashboard" or "Database History" tab.
+*   **Script**: *"Finally, every single prediction we run is persistently saved into a secure SQLite database, allowing total historical auditing and tracking. We can view broad, company-wide trends with dynamic charts."*
