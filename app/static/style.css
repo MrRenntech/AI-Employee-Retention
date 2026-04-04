@@ -97,3 +97,32 @@ h1, h2, h3, h4, th { text-transform: uppercase; letter-spacing: 2px; font-weight
 .dashboard-grid .kpi-card { border-left: 3px solid var(--primary); }
 
 .main-content { background-image: radial-gradient(circle at 50% 0%, rgba(255, 215, 0, 0.03) 0%, transparent 60%); }
+
+
+/* Dual Theme Engine */
+[data-theme="light"] {
+    --bg-color: #f3f4f6;       /* Chalk White */
+    --card-bg: #ffffff;        /* Pure White */
+    --primary: #D5001C;        /* Porsche Carmine Red */
+    --primary-hover: #b30017;
+    --text-main: #111827;      /* Stark Black */
+    --text-muted: #6b7280;     /* Grey */
+    --border-color: #e5e7eb;   /* Light metallic silver */
+    --risk-high: #D5001C;      /* Porsche Red */
+    --risk-low: #10b981;       /* Retain standard green for light mode */
+}
+
+/* Force Light Theme Adjustments */
+[data-theme="light"] .sidebar {
+    background: #ffffff;
+    box-shadow: 1px 0 10px rgba(0,0,0,0.05);
+}
+[data-theme="light"] .kpi-card, [data-theme="light"] .card {
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+[data-theme="light"] table.data th {
+    background: #f8fafc !important;
+}
+[data-theme="light"] .main-content {
+    background-image: none !important;
+}

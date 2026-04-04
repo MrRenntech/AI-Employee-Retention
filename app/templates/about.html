@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-container">
+    <div style="max-width: 800px; margin: 0 auto; color: var(--text-main);">
+        <h1 style="color: var(--primary); font-size: 32px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; margin-bottom: 30px;">Architecture & Purpose</h1>
+        
+        <div class="card" style="margin-bottom: 25px;">
+            <h2 style="font-size: 20px; margin-bottom: 15px; color: var(--text-main);">The Apex Mission</h2>
+            <p style="color: var(--text-muted); line-height: 1.6;">Apex Analytics is an enterprise-grade artificial intelligence engine designed specifically to intercept and neutralize employee attrition before it occurs. By ingesting over 23 distinct workforce features—ranging from commute vectors to compensation matrix anomalies—our engine acts as an early warning radar for HR executives.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 25px;">
+            <h2 style="font-size: 20px; margin-bottom: 15px; color: var(--text-main);">Under The Hood: Model Architecture</h2>
+            <p style="color: var(--text-muted); line-height: 1.6;">The analytics core runs purely on <strong>Scikit-Learn Logistic Regression</strong> and <strong>Random Forest Ensembles</strong>, scaled dynamically via StandardScaler architecture. The probability matrix operates on a strict 0.0 to 100.0 output, allowing definitive "High Risk" flags at a 60% probability threshold.</p>
+            <ul style="color: var(--text-muted); line-height: 1.8; margin-top: 10px; padding-left: 20px;">
+                <li><strong>Dimensionality:</strong> 23 Vector Features</li>
+                <li><strong>Scaling:</strong> Active Z-Score Normalization</li>
+                <li><strong>Engine:</strong> Multi-Class Classification</li>
+            </ul>
+        </div>
+        
+        <div class="card">
+            <h2 style="font-size: 20px; margin-bottom: 15px; color: var(--text-main);">Theme Engine</h2>
+            <p style="color: var(--text-muted); line-height: 1.6;">Apex Analytics features a dual-theme interface designed specifically for high-performance aesthetics: <strong>Lamborghini Giallo</strong> (Dark Mode) and <strong>Porsche Carmine Red</strong> (Light Mode). Toggle between them seamlessly using the switch in your command sidebar.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

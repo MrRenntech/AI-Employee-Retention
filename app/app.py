@@ -372,5 +372,48 @@ def history():
     logs = PredictionLog.query.order_by(PredictionLog.timestamp.desc()).limit(100).all()
     return render_template("history.html", active_page='history', logs=logs)
 
+
+@app.route("/simulator")
+@login_required
+def simulator():
+    return render_template("simulator.html", active_page='simulator', FEATURE_NAMES=FEATURE_NAMES)
+
+@app.route("/about")
+@login_required
+def about():
+    return render_template("about.html", active_page='about')
+
+@app.route("/batch_processing", methods=["GET", "POST"])
+@login_required
+def batch_processing():
+    if request.method == "POST":
+        if 'file' not in request.files:
+            return "No file part", 400
+        file = request.files["file"]
+        if file.filename == '':
+            return "No selected file", 400
+            
+        try:
+            df = pd.read_csv(file)
+            missing_cols = [col for col in FEATURE_NAMES if col not in df.columns]
+            if missing_cols:
+                return f"Missing columns in CSV: {', '.join(missing_cols)}", 400
+
+            df_scaled = scaler.transform(df[FEATURE_NAMES])
+            probs = attrition_model.predict_proba(df_scaled)[:,1]
+            df["Attrition Risk"] = [f"{round(p*100, 1)}%" for p in probs]
+            df["Risk Tag"] = ["High Risk" if p>=0.6 else "Low Risk" for p in probs]
+            
+            df['RawProb'] = probs
+            df = df.sort_values(by="RawProb", ascending=False).drop(columns=['RawProb'])
+
+            save_prediction_log("BATCH_UI", "Batch Processing", float(np.mean(probs)), "Mixed", {"rows": len(df)})
+            
+            return render_template("batch_result.html", active_page='batch_proc', tables=[df.to_html(classes='data', index=False)])
+        except Exception as e:
+            return f"Error: {e}", 500
+            
+    return render_template("batch.html", active_page='batch_proc')
+
 if __name__ == "__main__":
     app.run(debug=True)

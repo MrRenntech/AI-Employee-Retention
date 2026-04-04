@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-container">
+    <h2 style="color: var(--primary); font-size: 24px; margin-bottom: 10px;">Tactical Attrition Simulator</h2>
+    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px;">Dynamically adjust employee metrics to model "What-If" retention strategies in real-time.</p>
+    
+    <div class="grid" style="display: grid; grid-template-columns: 1fr 300px; gap: 30px; align-items: start;">
+        <div class="card" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-height: 70vh; overflow-y: auto;">
+            {% for name in FEATURE_NAMES %}
+            <div style="display: flex; flex-direction: column; gap: 5px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <label style="color: var(--text-main); font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;">{{ name }}</label>
+                    <span id="val_{{ name }}" style="color: var(--primary); font-weight: bold; font-size: 12px;">0</span>
+                </div>
+                <input type="range" class="sim-slider" id="feat_{{ name }}" name="{{ name }}" min="0" max="100000" value="0" oninput="updateVal('{{ name }}'); triggerSim();" style="width: 100%; accent-color: var(--primary);">
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="card" style="text-align: center; position: sticky; top: 100px;">
+            <p style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;">Real-Time Probability</p>
+            <div id="gauge-container" style="position: relative; width: 100%; height: 200px; display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                <canvas id="simGauge"></canvas>
+                <div style="position: absolute; display: flex; flex-direction: column; align-items: center;">
+                    <span id="probPercent" style="font-size: 40px; font-weight: bold; color: var(--text-main);">0%</span>
+                    <span id="riskLabel" style="font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--risk-low);">Low Risk</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let simChart;
+    
+    function updateVal(name) {
+        document.getElementById('val_' + name).innerText = document.getElementById('feat_' + name).value;
+    }
+    
+    // Set sensible defaults
+    document.addEventListener('DOMContentLoaded', () => {
+        // Init chart
+        simChart = new Chart(document.getElementById('simGauge'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Risk', 'Safe'],
+                datasets: [{
+                    data: [0, 100],
+                    backgroundColor: [getComputedStyle(document.documentElement).getPropertyValue('--risk-high').trim(), '#e2e8f0'],
+                    borderWidth: 0,
+                    circumference: 180,
+                    rotation: 270,
+                    cutout: '80%'
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } }
+            }
+        });
+        
+        // Mock data initialization just so sliders aren't 0
+        const defaults = {'Age': 35, 'DailyRate': 800, 'DistanceFromHome': 10, 'Education': 3, 'EnvironmentSatisfaction': 3, 'HourlyRate': 65, 'JobInvolvement': 3, 'JobLevel': 2, 'JobSatisfaction': 3, 'MonthlyIncome': 6000, 'MonthlyRate': 15000, 'NumCompaniesWorked': 3, 'PercentSalaryHike': 15, 'PerformanceRating': 3, 'RelationshipSatisfaction': 3, 'StockOptionLevel': 1, 'TotalWorkingYears': 10, 'TrainingTimesLastYear': 3, 'WorkLifeBalance': 3, 'YearsAtCompany': 7, 'YearsInCurrentRole': 4, 'YearsSinceLastPromotion': 2, 'YearsWithCurrManager': 4};
+        
+        for (let key in defaults) {
+            let el = document.getElementById('feat_' + key);
+            if(el) {
+                if (key.includes('Income') || key.includes('Rate')) { el.max = 20000; }
+                else if (key.includes('Years') || key === 'Age') { el.max = 60; }
+                else if (key.includes('Satisfaction') || key.includes('Level') || key.includes('Balance')) { el.max = 4; }
+                
+                el.value = defaults[key];
+                updateVal(key);
+            }
+        }
+        triggerSim();
+    });
+    
+    let debounceTimer;
+    function triggerSim() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const payload = {};
+            document.querySelectorAll('.sim-slider').forEach(el => payload[el.name] = el.value);
+            
+            fetch('/simulate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(r => r.json()).then(data => {
+                if(data.new_probability !== undefined) {
+                    const prob = parseFloat(data.new_probability);
+                    document.getElementById('probPercent').innerText = prob.toFixed(1) + "%";
+                    
+                    const isHighRisk = prob >= 60;
+                    document.getElementById('riskLabel').innerText = isHighRisk ? "High Risk" : "Low Risk";
+                    document.getElementById('riskLabel').style.color = isHighRisk ? 'var(--risk-high)' : 'var(--risk-low)';
+                    
+                    simChart.data.datasets[0].data = [prob, 100 - prob];
+                    simChart.data.datasets[0].backgroundColor[0] = isHighRisk ? 
+                        getComputedStyle(document.documentElement).getPropertyValue('--risk-high').trim() : 
+                        getComputedStyle(document.documentElement).getPropertyValue('--risk-low').trim();
+                        
+                    simChart.update();
+                }
+            });
+        }, 300);
+    }
+</script>
+{% endblock %}
