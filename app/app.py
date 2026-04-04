@@ -353,7 +353,11 @@ def executive():
                 histogram_data=histogram_data
             )
         except Exception as e:
-            return f"Error generating executive report: {str(e)}", 500
+            import traceback
+            error_trace = traceback.format_exc()
+            print("EXECUTIVE ROUTE ERROR TRACEBACK:")
+            print(error_trace)
+            return f"<pre>Error generating executive report: {str(e)}\n\n{error_trace}</pre>", 500
 
     return render_template("executive_upload.html")
 

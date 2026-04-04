@@ -32,7 +32,11 @@ model.fit(X_train, y_train)
 preds = model.predict(X_test)
 print("Baseline Accuracy:", accuracy_score(y_test, preds))
 
-# 5. Save the trained model and the scaler for deployment
+# 5. Provide backward compatibility for older scikit-learn deployment instances (like on Render)
+if not hasattr(model, "multi_class"):
+    model.multi_class = "ovr"
+
+# 6. Save the trained model and the scaler for deployment
 joblib.dump(model, "models/attrition_model.pkl")
 joblib.dump(scaler, "models/scaler.pkl")
 
