@@ -1,4 +1,4 @@
-# 🎤 Presentation Script: RetentionAI Executive Summary
+# 🎤 Presentation Script: Apex Analytics Executive Summary
 
 *(Instructions for Presenter: This document is designed to be read aloud or referenced as speaker notes during your presentation.)*
 
@@ -7,7 +7,7 @@
 *   **The Problem with Traditional HR**: Current retention strategies are completely reactive. We rely on exit interviews to tell us why someone left—at which point the talent and capital are already gone.
 *   **The Solution**: We need to shift from *Reactive HR* to *Proactive HR*. We need to know who will quit, and why, *before* they hand in their resignation.
 
-## 2. Introducing RetentionAI (The "What")
+## 2. Introducing Apex Analytics (The "What")
 *   **A Crystal Ball for HR**: We have developed a production-ready Artificial Intelligence engine that predicts employee resignation with **88% accuracy**.
 *   **Data-Driven, Not Gut-Driven**: The system ingests objective metrics (like salary, commute distance, recent promotion history, and job satisfaction) to output exact, mathematical risk percentages.
 *   **Not Just Prediction—Action**: It’s not enough to say someone will quit. Our system provides **Explainable AI**. By acting as a Retention Engine, it highlights the exact pain points (e.g., "Work-Life Balance is critically low") and prescribes actionable advice.

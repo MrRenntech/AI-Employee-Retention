@@ -26,7 +26,7 @@
 
 ### 1. The Welcome & Login
 *   **Action**: Show the Login Screen.
-*   **Script**: *"Welcome to the RetentionAI secure portal. Because HR data is incredibly sensitive, the entire application sits behind a secure Flask-Login wall. I'm going to log in with our encrypted Admin credentials."*
+*   **Script**: *"Welcome to the Apex Analytics secure portal. Because HR data is incredibly sensitive, the entire application sits behind a secure Flask-Login wall. I'm going to log in with our encrypted Admin credentials."*
 *   **Action**: Enter `admin` / `password` and hit Login.
 
 ### 2. Individual Assessment Demonstration
