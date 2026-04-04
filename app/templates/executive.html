@@ -103,7 +103,13 @@
 </div>
 
 <!-- Chart.js Injection with Dark Theme -->
-<script>
+
+    <script>
+        const style = getComputedStyle(document.body);
+        const colPrimary = () => style.getPropertyValue('--primary').trim() || '#FFD700';
+        const colRiskLow = () => style.getPropertyValue('--risk-low').trim() || '#111111';
+        const colText = () => style.getPropertyValue('--text-muted').trim() || '#555555';
+
     Chart.defaults.color = '#94a3b8';
     Chart.defaults.font.family = 'Inter';
 
@@ -116,7 +122,7 @@
             labels: ['High Risk','Low Risk'],
             datasets: [{
                 data: [{{ high_risk }}, {{ total - high_risk }}],
-                backgroundColor: ['#ef4444','#10b981'],
+                backgroundColor: [colPrimary(), colRiskLow()],
                 borderWidth: 0
             }]
         },
@@ -133,7 +139,7 @@
             datasets:[{
                 label:'Employee Count',
                 data:{{ histogram_data }},
-                backgroundColor:'#FFD700',
+                backgroundColor: colPrimary(),
                 borderRadius: 4
             }]
         },
@@ -151,7 +157,7 @@
             datasets: [{
                 label: 'High Risk Percentage',
                 data: deptData.data,
-                backgroundColor: '#FFD700',
+                backgroundColor: colPrimary(),
                 borderRadius: 4
             }]
         },

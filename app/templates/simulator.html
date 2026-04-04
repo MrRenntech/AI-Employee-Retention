@@ -30,7 +30,13 @@
     </div>
 </div>
 
-<script>
+
+    <script>
+        const style = getComputedStyle(document.body);
+        const colPrimary = () => style.getPropertyValue('--primary').trim() || '#FFD700';
+        const colRiskLow = () => style.getPropertyValue('--risk-low').trim() || '#111111';
+        const colText = () => style.getPropertyValue('--text-muted').trim() || '#555555';
+
     let simChart;
     
     function updateVal(name) {

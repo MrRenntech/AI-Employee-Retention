@@ -107,7 +107,13 @@
     </table>
 </div>
 
-<script>
+
+    <script>
+        const style = getComputedStyle(document.body);
+        const colPrimary = () => style.getPropertyValue('--primary').trim() || '#FFD700';
+        const colRiskLow = () => style.getPropertyValue('--risk-low').trim() || '#111111';
+        const colText = () => style.getPropertyValue('--text-muted').trim() || '#555555';
+
     Chart.defaults.color = '#64748b';
     Chart.defaults.font.family = 'Inter';
     
@@ -118,7 +124,7 @@
             labels: ['High Risk', 'Low Risk'],
             datasets: [{
                 data: [{{ high_risk }}, {{ total - high_risk }}],
-                backgroundColor: ['#ef4444', '#FFD700'],
+                backgroundColor: [colPrimary(), colRiskLow()],
                 borderWidth: 0,
                 cutout: '65%'
             }]
@@ -137,7 +143,7 @@
             labels: deptData.labels,
             datasets: [{
                 data: deptData.data,
-                backgroundColor: '#FFD700',
+                backgroundColor: colPrimary(),
                 borderRadius: 4,
                 barPercentage: 0.6
             }]
