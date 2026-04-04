@@ -48,6 +48,28 @@ FEATURE_NAMES = [
     'YearsSinceLastPromotion','YearsWithCurrManager'
 ]
 
+COMPANY_AVERAGES = {
+    'Age': 37.0, 'DailyRate': 802.5, 'DistanceFromHome': 9.2, 'Education': 2.9,
+    'EnvironmentSatisfaction': 2.7, 'HourlyRate': 65.9, 'JobInvolvement': 2.7,
+    'JobLevel': 2.1, 'JobSatisfaction': 2.7, 'MonthlyIncome': 6502.9,
+    'MonthlyRate': 14313.1, 'NumCompaniesWorked': 2.7, 'PercentSalaryHike': 15.2,
+    'PerformanceRating': 3.1, 'RelationshipSatisfaction': 2.7,
+    'StockOptionLevel': 0.8, 'TotalWorkingYears': 11.3,
+    'TrainingTimesLastYear': 2.8, 'WorkLifeBalance': 2.8,
+    'YearsAtCompany': 7.0, 'YearsInCurrentRole': 4.2,
+    'YearsSinceLastPromotion': 2.2, 'YearsWithCurrManager': 4.1
+}
+
+def get_feature_insight(feature_name, employee_val, avg_val):
+    """Generates natural language context for why a feature is risky."""
+    if employee_val < avg_val:
+        diff = round(avg_val - employee_val, 1)
+        return f"{feature_name} is critically below company baseline by {diff} units."
+    elif employee_val > avg_val:
+        diff = round(employee_val - avg_val, 1)
+        return f"{feature_name} is elevated above company average by {diff} units."
+    return f"{feature_name} matches the company baseline perfectly."
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'retention_ai_super_secret_key_local_dev')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///retention.db')
@@ -166,10 +188,25 @@ def predict():
         # Get exact feature importances/coefficients mapped to values
         top_indices = np.argsort(np.abs(importances))[-5:][::-1]
         top_features = []
+        top_insights = []
+        
         for i in top_indices:
             feat = FEATURE_NAMES[i]
-            # Create a user-friendly string showing the metric explicitly
-            top_features.append(f"{feat}")
+            val = float(values[i])
+            avg = COMPANY_AVERAGES.get(feat, 0)
+            
+            top_features.append(feat)
+            
+            formatted_val = int(val) if val.is_integer() else round(val, 1)
+            formatted_avg = int(avg) if isinstance(avg, int) else round(avg, 1)
+            insight_text = get_feature_insight(feat, formatted_val, formatted_avg)
+            
+            top_insights.append({
+                'name': feat,
+                'employee_val': formatted_val,
+                'avg_val': formatted_avg,
+                'insight': insight_text
+            })
 
         recommendations = retention_recommendation(top_features)
         
@@ -187,6 +224,7 @@ def predict():
             risk=prediction,
             probability=round(float(prob)*100,2),
             top_features=top_features,
+            top_insights=top_insights,
             recommendations=recommendations,
             original_values=values, # Pass original values to populate sliders
             feature_names=FEATURE_NAMES

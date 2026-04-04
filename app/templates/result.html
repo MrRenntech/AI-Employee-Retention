@@ -4,165 +4,388 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Assessment Result - RetentionAI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Force modern dark theme independent of legacy style.css -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #0b1118;
+            --card-bg: #131a24;
+            --primary: #06b6d4;
+            --primary-hover: #0891b2;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --risk-high: #ef4444;       
+            --risk-low: #10b981;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        h1, h2, h3 { margin: 0; font-weight: 600; }
+        
+        .btn {
+            background: var(--primary);
+            color: #000;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .card-title {
+            color: var(--primary);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Gauge Area */
+        .gauge-container {
+            position: relative;
+            height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .gauge-text {
+            position: absolute;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .list-item {
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--primary);
+        }
+        .list-item h4 {
+            margin: 0 0 5px 0;
+            font-size: 15px;
+            color: var(--text-main);
+        }
+        .list-item p {
+            margin: 0;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .slider-group { margin-bottom: 20px; }
+        .slider-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px;}
+        input[type=range] {
+            width: 100%;
+            accent-color: var(--primary);
+        }
+        
+        .risk-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .tag-high { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid var(--risk-high); }
+        .tag-low { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid var(--risk-low); }
+
+    </style>
 </head>
 <body>
 
-    <header class="hero" style="padding: 60px 20px;">
-        <div class="hero-content">
-            <h1>Prediction Result</h1>
-            <div class="hero-buttons">
-                <a href="/" class="btn secondary">Analyze Another Employee</a>
-            </div>
+<div class="container">
+    <header>
+        <div>
+            <h1>Employee Profile Assessment</h1>
+            <p style="color: var(--text-muted); margin-top: 5px;">RetentionAI Deep Analysis</p>
         </div>
+        <a href="/" class="btn">Analyze Another</a>
     </header>
 
-    <div class="dashboard-container" style="max-width: 800px;">
-
-        <div class="card {{ 'high-risk' if risk=='High Risk' else 'low-risk' }}" style="text-align: center; margin-bottom: 30px;">
-            <p style="color: #666; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;">Employee Risk Profile</p>
-            <h2 class="metric" id="current_risk_text" style="margin: 10px 0; font-size: 56px;">{{ risk }}</h2>
-            <p style="font-size: 18px; color: #555;">Attrition Probability: <strong id="current_prob_text">{{ probability }}%</strong></p>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="card">
-                <h3 style="color: #1f3c88; display: flex; align-items: center; gap: 8px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>
-                    AI Insight Engine
-                </h3>
-                <p style="color: #777; font-size: 14px; margin-top: 5px; margin-bottom: 15px;">Model explanation based on top systemic attrition drivers.</p>
-                <ul class="feature-list">
-                    {% for factor in top_features %}
-                    <li style="color: #444;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#e74c3c" style="margin-right: 12px; min-width: 16px;" viewBox="0 0 16 16">
-                            <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                        </svg>
-                        {{ factor }}
-                    </li>
-                    {% endfor %}
-                </ul>
+    <div class="grid">
+        <!-- AI Risk Gauge -->
+        <div class="card">
+            <div class="card-title">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/></svg>
+                Current Attrition Risk
             </div>
-
-            <div class="card">
-                <h3 style="color: #1f3c88;">Recommended Action Plan</h3>
-                 <p style="color: #777; font-size: 14px; margin-top: -5px; margin-bottom: 15px;">Targeted interventions to mitigate risk.</p>
-                <ul class="feature-list">
-                    {% for rec in recommendations %}
-                    <li style="color: #444;">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#2ecc71" style="margin-right: 12px; min-width: 16px;" viewBox="0 0 16 16">
-                            <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                        </svg>
-                        {{ rec }}
-                    </li>
-                    {% endfor %}
-                </ul>
+            <div style="text-align: center; margin-bottom: 10px;">
+                <span class="risk-tag {{ 'tag-high' if risk=='High Risk' else 'tag-low' }}">{{ risk }}</span>
+            </div>
+            <div class="gauge-container">
+                <canvas id="riskGauge"></canvas>
+                <div class="gauge-text">
+                    <span style="font-size: 32px; font-weight: bold; color: var(--text-main);" id="gauge-prob-text">{{ probability }}%</span>
+                    <span style="font-size: 12px; color: var(--text-muted);">Probability</span>
+                </div>
             </div>
         </div>
 
-        <!-- SCENARIO SIMULATOR -->
-        <div class="simulator-panel card" style="margin-top: 30px;">
-            <h3 style="color: #1f3c88; display: flex; align-items: center; gap: 8px; margin-bottom: 20px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>
+        <!-- Scenario Simulator -->
+        <div class="card">
+            <div class="card-title">
+                <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>
                 Scenario Simulator
-            </h3>
-            <p style="color: #555; font-size: 14px; margin-bottom: 20px;">Adjust key retention levers to simulate the impact on this employee's attrition risk in real-time.</p>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Adjust key retention levers to simulate impact on attrition risk in real-time.</p>
             
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
-                <div class="simulator-box">
-                    <div class="simulator-label">
-                        <span>Monthly Income ($)</span>
-                        <span id="Income_val">{{ '{:.0f}'.format(original_values[9]) }}</span>
-                    </div>
-                    <!-- Allow up to 30% increase for simulation -->
-                    <input type="range" id="sim_Income" min="{{ original_values[9] * 0.9 }}" max="{{ original_values[9] * 1.5 }}" step="100" value="{{ original_values[9] }}" oninput="updateSim()">
-                </div>
-
-                <div class="simulator-box">
-                    <div class="simulator-label">
-                        <span>Work-Life Balance (1-4)</span>
-                        <span id="WLB_val">{{ '{:.0f}'.format(original_values[18]) }}</span>
-                    </div>
-                    <input type="range" id="sim_WLB" min="1" max="4" step="1" value="{{ original_values[18] }}" oninput="updateSim()">
-                </div>
-                
-                <div class="simulator-box">
-                    <div class="simulator-label">
-                        <span>Years Since Promotion</span>
-                        <span id="Promo_val">{{ '{:.0f}'.format(original_values[21]) }}</span>
-                    </div>
-                    <input type="range" id="sim_Promo" min="0" max="15" step="1" value="{{ original_values[21] }}" oninput="updateSim()">
-                </div>
+            <div class="slider-group">
+                <div class="slider-label"><span>Monthly Income ($)</span> <span id="Income_val">{{ '{:.0f}'.format(original_values[9]) }}</span></div>
+                <input type="range" id="sim_Income" min="{{ original_values[9] * 0.9 }}" max="{{ original_values[9] * 1.5 }}" step="100" value="{{ original_values[9] }}" oninput="updateSim()">
             </div>
             
-            <div style="margin-top: 20px; padding: 15px; background: rgba(31, 60, 136, 0.05); border-radius: 6px; text-align: center;">
-                <p style="margin: 0; font-size: 16px; color: #333;">Simulated Attrition Probability: <strong id="simul_prob_text" style="color: #1f3c88; font-size: 24px;">{{ probability }}%</strong></p>
-                <p id="simul_diff" style="margin: 5px 0 0 0; font-size: 14px; color: #777;">(Adjust sliders to see impact)</p>
+            <div class="slider-group">
+                <div class="slider-label"><span>Work-Life Balance (1-4)</span> <span id="WLB_val">{{ '{:.0f}'.format(original_values[18]) }}</span></div>
+                <input type="range" id="sim_WLB" min="1" max="4" step="1" value="{{ original_values[18] }}" oninput="updateSim()">
             </div>
-        </div>
 
-        <div class="actions" style="margin-top: 40px; text-align: center;">
-            <a href="/" class="btn">Analyze Another Employee</a>
+            <div class="slider-group">
+                <div class="slider-label"><span>Years Since Promotion</span> <span id="Promo_val">{{ '{:.0f}'.format(original_values[21]) }}</span></div>
+                <input type="range" id="sim_Promo" min="0" max="15" step="1" value="{{ original_values[21] }}" oninput="updateSim()">
+            </div>
+
+            <div style="margin-top: 25px; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 8px; text-align: center; border: 1px dashed var(--border-color);">
+                <p style="margin: 0; font-size: 14px; color: var(--text-muted);">Simulated Result:</p>
+                <div id="simul_diff" style="font-size: 13px; min-height: 20px; color: var(--text-main); margin-top: 5px;">Change levers to view impact</div>
+            </div>
         </div>
     </div>
 
-    <!-- Simulator Logic -->
-    <script>
-        const originalValues = {{ original_values | tojson }};
-        const featureNames = {{ feature_names | tojson }};
-        const baseProb = {{ probability }};
+    <!-- Comparative Chart -->
+    <div class="card" style="margin-bottom: 25px;">
+        <div class="card-title">
+            <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/></svg>
+            Employee vs Company Baseline Comparison
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">AI extracted the top drivers out of alignment that triggered the Attrition Risk prediction.</p>
+        <div style="height: 300px;">
+            <canvas id="comparisonChart"></canvas>
+        </div>
+    </div>
 
-        // Indexes mapping back to FEATURE_NAMES in app.py
-        const IDX_INCOME = 9;
-        const IDX_WLB = 18;
-        const IDX_PROMO = 21;
+    <!-- Detailed Insights & Action Plan -->
+    <div class="grid">
+        <div class="card">
+            <div class="card-title">Deep Natural Language Insights</div>
+            <div style="margin-top: 15px;">
+                {% for insight in top_insights %}
+                <div class="list-item">
+                    <h4>{{ insight.name }}</h4>
+                    <p>{{ insight.insight }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
-        function updateSim() {
-            // Get slider values
-            const newIncome = parseFloat(document.getElementById('sim_Income').value);
-            const newWLB = parseFloat(document.getElementById('sim_WLB').value);
-            const newPromo = parseFloat(document.getElementById('sim_Promo').value);
+        <div class="card">
+            <div class="card-title">Prescribed Action Plan</div>
+            <div style="margin-top: 15px;">
+                {% for rec in recommendations %}
+                <div class="list-item" style="border-left-color: #10b981;">
+                    <h4>Intervention Suggested</h4>
+                    <p>{{ rec }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 
-            // Update UI labels visually
-            document.getElementById('Income_val').innerText = newIncome.toFixed(0);
-            document.getElementById('WLB_val').innerText = newWLB;
-            document.getElementById('Promo_val').innerText = newPromo;
+</div>
 
-            // Prepare payload
-            let payload = {};
-            for(let i=0; i<featureNames.length; i++) {
-                payload[featureNames[i]] = originalValues[i]; // Load all base values
-            }
-            // Override with simulated values
-            payload['MonthlyIncome'] = newIncome;
-            payload['WorkLifeBalance'] = newWLB;
-            payload['YearsSinceLastPromotion'] = newPromo;
+<script>
+    const probability = {{ probability }};
+    const riskColor = probability >= 60 ? '#ef4444' : '#10b981';
+    
+    // 1. Render Gauge Chart
+    const ctxGauge = document.getElementById('riskGauge').getContext('2d');
+    let riskGaugeChart = new Chart(ctxGauge, {
+        type: 'doughnut',
+        data: {
+            labels: ['Risk', 'Safe'],
+            datasets: [{
+                data: [probability, 100 - probability],
+                backgroundColor: [riskColor, '#1e293b'],
+                borderWidth: 0,
+                cutout: '80%',
+                circumference: 270,
+                rotation: 225
+            }]
+        },
+        options: {
+            plugins: { legend: {display: false}, tooltip: {enabled: false} },
+            responsive: true,
+            maintainAspectRatio: false,
+        }
+    });
 
-            // Send AJAX request
-            fetch('/simulate', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.new_probability !== undefined) {
-                    const newProb = data.new_probability;
-                    document.getElementById('simul_prob_text').innerText = newProb.toFixed(2) + '%';
-                    
-                    let diff = newProb - baseProb;
-                    let diffText = document.getElementById('simul_diff');
-                    if (diff < -0.1) {
-                        diffText.innerHTML = `<span style="color: #2ecc71; font-weight: bold;">↓ Dropped by ${Math.abs(diff).toFixed(2)}%</span>`;
-                    } else if (diff > 0.1) {
-                        diffText.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">↑ Increased by ${diff.toFixed(2)}%</span>`;
-                    } else {
-                        diffText.innerText = "(No significant change)";
+    // 2. Render Comparative Bar Chart
+    const featureLabels = [{% for item in top_insights %}'{{ item.name }}',{% endfor %}];
+    const employeeData = [{% for item in top_insights %}{{ item.employee_val }},{% endfor %}];
+    const avgData = [{% for item in top_insights %}{{ item.avg_val }},{% endfor %}];
+
+    // Normalize to percentage index for visual scaling coherence across disparate units
+    const normalizedEmployee = [];
+    const normalizedAvg = [];
+    
+    for (let i = 0; i < featureLabels.length; i++) {
+        let base = avgData[i] || 1; 
+        let empPerc = (employeeData[i] / base) * 100;
+        normalizedEmployee.push(empPerc);
+        normalizedAvg.push(100);
+    }
+
+    const ctxComp = document.getElementById('comparisonChart').getContext('2d');
+    new Chart(ctxComp, {
+        type: 'bar',
+        data: {
+            labels: featureLabels,
+            datasets: [
+                {
+                    label: 'Employee Variance (Scaled)',
+                    data: normalizedEmployee,
+                    backgroundColor: '#06b6d4',
+                    borderRadius: 4
+                },
+                {
+                    label: 'Company Baseline (Target 100%)',
+                    data: normalizedAvg,
+                    backgroundColor: '#334155',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { display: false, beginAtZero: true },
+                x: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8', font: {family: 'Inter'} } }
+            },
+            plugins: {
+                legend: { position: 'top', labels: {color: '#94a3b8', font: {family: 'Inter'} } },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let idx = context.dataIndex;
+                            if (context.datasetIndex === 0) return `Employee Value: ${employeeData[idx]}`;
+                            return `Company Average: ${avgData[idx]}`;
+                        }
                     }
                 }
-            })
-            .catch(err => console.error("Simulation error:", err));
+            }
         }
-    </script>
+    });
+
+    // Simulator Logic
+    const originalValues = {{ original_values | tojson }};
+    const featureNames = {{ feature_names | tojson }};
+    const baseProb = {{ probability }};
+    
+    function updateSim() {
+        const newIncome = parseFloat(document.getElementById('sim_Income').value);
+        const newWLB = parseFloat(document.getElementById('sim_WLB').value);
+        const newPromo = parseFloat(document.getElementById('sim_Promo').value);
+
+        document.getElementById('Income_val').innerText = newIncome.toFixed(0);
+        document.getElementById('WLB_val').innerText = newWLB;
+        document.getElementById('Promo_val').innerText = newPromo;
+
+        let payload = {};
+        for(let i=0; i<featureNames.length; i++) {
+            payload[featureNames[i]] = originalValues[i];
+        }
+        payload['MonthlyIncome'] = newIncome;
+        payload['WorkLifeBalance'] = newWLB;
+        payload['YearsSinceLastPromotion'] = newPromo;
+
+        fetch('/simulate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.new_probability !== undefined) {
+                const newProb = data.new_probability;
+                let diff = newProb - baseProb;
+                let diffText = document.getElementById('simul_diff');
+                
+                // Animate gauge update
+                riskGaugeChart.data.datasets[0].data = [newProb, 100 - newProb];
+                riskGaugeChart.data.datasets[0].backgroundColor = [newProb >= 60 ? '#ef4444' : '#10b981', '#1e293b'];
+                riskGaugeChart.update();
+                document.getElementById('gauge-prob-text').innerText = newProb.toFixed(2) + '%';
+                
+                if (diff < -0.1) {
+                    diffText.innerHTML = `<span style="color: #10b981; font-weight: bold;">↓ Risk Mitigated by ${Math.abs(diff).toFixed(2)}%</span>`;
+                } else if (diff > 0.1) {
+                    diffText.innerHTML = `<span style="color: #ef4444; font-weight: bold;">↑ Risk Accelerated by ${diff.toFixed(2)}%</span>`;
+                } else {
+                    diffText.innerHTML = `<span style="color: #94a3b8;">No significant change</span>`;
+                }
+            }
+        })
+        .catch(err => console.error("Simulation error:", err));
+    }
+</script>
 </body>
 </html>
