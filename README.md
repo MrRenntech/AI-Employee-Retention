@@ -1,6 +1,6 @@
 <div align="center">
   
-# 🧠 RetentionAI: Enterprise Employee Attrition Engine
+# 🧠 Apex Analytics: Enterprise Employee Attrition Engine
 
 [![Live Deployment](https://img.shields.io/badge/Live_Deployment-Up_%26_Running-success?style=for-the-badge&logo=render)](https://ai-employee-retention.onrender.com/)
 [![Python Requirements](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
@@ -29,7 +29,7 @@ We have constructed a comprehensive suite of presentation-ready documents design
 
 ## 🌐 Live Application
 The fully functional production application is currently live on Render:
-👉 **[Access RetentionAI Here](https://ai-employee-retention.onrender.com/)**
+👉 **[Access Apex Analytics Here](https://ai-employee-retention.onrender.com/)**
 
 *(For security and system health, the app requires authentication. If deployed locally, you can initialize the DB using `python app/init_db.py` to generate the default `admin`/`password` account.)*
 

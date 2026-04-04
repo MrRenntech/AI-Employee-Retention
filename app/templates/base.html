@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RetentionAI</title>
+    <title>Apex Analytics</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -14,10 +14,10 @@
         <!-- Persistent Left Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header" style="margin-bottom: 30px;">
-                <div style="background: rgba(6, 182, 212, 0.1); padding: 8px; border-radius: 10px; display: inline-flex;">
+                <div style="background: rgba(255, 215, 0, 0.1); padding: 8px; border-radius: 10px; display: inline-flex;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                 </div>
-                <h2>RetentionAI</h2>
+                <h2>Apex Analytics</h2>
             </div>
             
             <nav class="sidebar-nav">
@@ -29,10 +29,7 @@
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                     Predict
                 </a>
-                <a href="{{ url_for('executive') }}" class="sidebar-link {{ 'active' if active_page == 'batch' else '' }}">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                    Batch Upload
-                </a>
+                
                 <a href="{{ url_for('history') }}" class="sidebar-link {{ 'active' if active_page == 'history' else '' }}">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                     History
