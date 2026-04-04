@@ -27,6 +27,10 @@ SCALER_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models",
 # Load models safely
 try:
     attrition_model = joblib.load(MODEL_PATH)
+    # Monkey patch for model backwards-compatibility with older scikit-learn versions (like 1.3.x on Render or local Python 3.8)
+    if not hasattr(attrition_model, "multi_class"):
+        attrition_model.multi_class = "ovr"
+        
     scaler = joblib.load(SCALER_PATH)
 except FileNotFoundError:
     print(f"Error: Model files not found at {MODEL_PATH} or {SCALER_PATH}. Please run src/train_model.py first.")
