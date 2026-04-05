@@ -14,6 +14,7 @@
             Total Analyzed
         </div>
         <div style="font-size: 32px; font-weight: bold; color: var(--text-main);">{{ total }}</div>
+        <p style="margin: 5px 0 0; font-size: 11px; color: var(--text-muted);">Total number of employee records processed by the model.</p>
     </div>
     
     <div class="kpi-card card" style="padding: 20px;">
@@ -22,6 +23,7 @@
             High Risk
         </div>
         <div style="font-size: 32px; font-weight: bold; color: var(--text-main);">{{ high_risk }}</div>
+        <p style="margin: 5px 0 0; font-size: 11px; color: var(--text-muted);">Employees identified with a >60% probability of attrition.</p>
     </div>
 
     <div class="kpi-card card" style="padding: 20px;">
@@ -30,6 +32,7 @@
             Avg Risk Score
         </div>
         <div style="font-size: 32px; font-weight: bold; color: var(--text-main);">{{ avg_risk }}%</div>
+        <p style="margin: 5px 0 0; font-size: 11px; color: var(--text-muted);">Mean attrition probability across the entire analyzed workforce.</p>
     </div>
 
     <div class="kpi-card card" style="padding: 20px;">
@@ -38,13 +41,15 @@
             Health Score
         </div>
         <div style="font-size: 32px; font-weight: bold; color: var(--text-main);">{{ workforce_score }}/100</div>
+        <p style="margin: 5px 0 0; font-size: 11px; color: var(--text-muted);">Composite score reflecting overall workforce stability.</p>
     </div>
 </div>
 
 <!-- Main Display Charts -->
-<div class="chart-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+<div class="chart-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 25px;">
     <div class="card">
-        <h3 style="color: var(--text-main); font-size: 15px; font-weight: 600; margin-bottom: 0;">Risk Distribution</h3>
+        <h3 style="color: var(--text-main); font-size: 15px; font-weight: 600; margin-bottom: 5px;">Risk Distribution</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 0; margin-bottom: 15px;">Proportion of employees by risk category.</p>
         <div style="position: relative; height: 250px; width: 100%; display: flex; justify-content: center; align-items: center;">
             <canvas id="riskDistributionDonut"></canvas>
             <div style="position: absolute; bottom: 10px; left: 10px; color: var(--primary); font-size: 13px; font-weight: 600;">
@@ -58,9 +63,19 @@
     </div>
 
     <div class="card">
-        <h3 style="color: var(--text-main); font-size: 15px; font-weight: 600; margin-bottom: 0;">Department Risk %</h3>
+        <h3 style="color: var(--text-main); font-size: 15px; font-weight: 600; margin-bottom: 5px;">Department Risk %</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 0; margin-bottom: 15px;">Average attrition risk probability per department.</p>
         <div style="position: relative; height: 250px; width: 100%;">
             <canvas id="departmentBarChart"></canvas>
+        </div>
+    </div>
+
+    <!-- New Trend Chart -->
+    <div class="card">
+        <h3 style="color: var(--text-main); font-size: 15px; font-weight: 600; margin-bottom: 5px;">Risk Trend Over Time</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 0; margin-bottom: 15px;">Rolling 6-month average workforce risk score.</p>
+        <div style="position: relative; height: 250px; width: 100%;">
+            <canvas id="riskTrendChart"></canvas>
         </div>
     </div>
 </div>
@@ -153,6 +168,33 @@
             scales: {
                 x: { grid: { display: false, color: '#1e293b' } },
                 y: { grid: { color: '#1e293b' }, max: 60 }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Line Chart
+    const trendData = {{ trend_chart_data | tojson | safe }};
+    new Chart(document.getElementById('riskTrendChart'), {
+        type: 'line',
+        data: {
+            labels: trendData.labels,
+            datasets: [{
+                label: 'Avg Risk %',
+                data: trendData.data,
+                borderColor: colPrimary(),
+                backgroundColor: colPrimary() + '20',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: colPrimary()
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: {
+                x: { grid: { display: false, color: '#1e293b' } },
+                y: { grid: { display: false, color: '#1e293b' }, min: 40, max: 60 }
             },
             plugins: { legend: { display: false } }
         }

@@ -160,6 +160,12 @@ def home():
         "data": [50.2, 40.1, 35.5, 33.2]
     }
     
+    # Fake trend data for line chart
+    trend_chart_data = {
+        "labels": ["Oct", "Nov", "Dec", "Jan", "Feb", "Mar"],
+        "data": [42.1, 41.5, 44.2, 45.8, 47.5, avg_risk]
+    }
+    
     # Fetch top 5 at risk
     top_logs = PredictionLog.query.order_by(PredictionLog.probability.desc()).limit(5).all()
 
@@ -170,6 +176,7 @@ def home():
         avg_risk=avg_risk,
         workforce_score=workforce_score,
         department_chart_data=department_chart_data,
+        trend_chart_data=trend_chart_data,
         top_logs=top_logs
     )
 
