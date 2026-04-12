@@ -1,57 +1,28 @@
 <div align="center">
   
-# 🧠 Apex Analytics: Enterprise Employee Attrition Engine
+# 🧠 Apex Analytics: HR Attrition Engine
 
 [![Live Deployment](https://img.shields.io/badge/Live_Deployment-Up_%26_Running-success?style=for-the-badge&logo=render)](https://ai-employee-retention.onrender.com/)
-[![Python Requirements](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python)](https://www.python.org/)
-[![Flask Web Framework](https://img.shields.io/badge/Flask-Web_App-black?style=for-the-badge&logo=flask)](https://flask.palletsprojects.com/)
-[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Machine_Learning-orange?style=for-the-badge&logo=scikit-learn)](https://scikit-learn.org/)
+[![Flask](https://img.shields.io/badge/Flask-Web_App-black?style=for-the-badge&logo=flask)](https://flask.palletsprojects.com/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Model-orange?style=for-the-badge&logo=scikit-learn)](https://scikit-learn.org/)
 
 **A Production-Ready AI Suite for Proactive HR Decision Making.**
-
----
-
 </div>
 
-## 🎤 Presentation & Deep Dive Materials
-
-We have constructed a comprehensive suite of presentation-ready documents designed to explain exactly how this system works, from high-level business value to deep architectural decisions. If you are presenting this project, read through the `docs/` folder in this exact order:
-
-1. **[Executive Summary / Pitch Script](docs/SUMMARY.md)**: Start here. The "Why" and the "What." Designed to be read aloud as an executive pitch outlining ROI and core business logic.
-2. **[Live Demo Guide](docs/HOW_TO_RUN.md)**: A step-by-step instructional script on how to flawlessly execute the application during a live presentation.
-3. **[FAQ & Q/A Bank](docs/FAQ_AND_QA_BANK.md)**: Keep this open during your presentation. It contains detailed answers to anticipated audience questions regarding bias, security, and next steps.
-4. **[Architecture & Technology Manifesto](docs/ARCHITECTURE_AND_TECH.md)**: The deep-dive into the "How." Explains exactly why tools like Flask, SQLite, and Scikit-Learn were chosen over alternatives.
-5. **[File Descriptions & Logic Flow](docs/FILE_DESCRIPTIONS.md)**: Explains the internal circuitry of the codebase.
-6. **[Project Directory Tree](docs/PROJECT_TREE.md)**: A visual representation of folder structures.
-7. **[Development Steps & History](docs/DEVELOPMENT_STEPS.md)**: A chronological log of how the system was built.
-
 ---
+
+## 🏗️ Architecture Flow
+
+```mermaid
+graph LR
+    HR[HR Executive] -->|CSV Upload| UI[Dashboards UI]
+    UI --> Flask[Flask REST API]
+    Flask --> RF[Random Forest Alg]
+    Flask --> LR[Logistic Regression]
+    RF --> Insights[Deep Feature Analytics]
+    LR --> Probability[Flight Risk Score]
+    Probability & Insights --> UI
+```
 
 ## 🌐 Live Application
-The fully functional production application is currently live on Render:
 👉 **[Access Apex Analytics Here](https://ai-employee-retention.onrender.com/)**
-
-*(For security and system health, the app requires authentication. If deployed locally, you can initialize the DB using `python app/init_db.py` to generate the default `admin`/`password` account.)*
-
----
-
-## 🚀 Key Features
-
-*   **Dual Machine Learning Architecture**: 
-    *   **Baseline API Model:** 88% accurate Logistic Regression model allowing fast, linear, highly explainable real-time inferences.
-    *   **Advanced Analytical Model:** Deep Random Forest algorithm analyzing nonlinear patterns to map exactly which corporate systemic issues are causing attrition.
-*   **Executive Dashboard**: A premium, visually stunning web UI featuring Glassmorphism design aesthetics, allowing non-technical HR leaders to consume AI metrics instantly.
-*   **Batch Roster Processing**: Instead of single entries, executives can drag-and-drop massive `.csv` files into the portal to generate an instant triage list ranking hundreds of employees by flight risk.
-*   **Bank-Grade Security**: Fully guarded via `Flask-Login` session management, utilizing `werkzeug pbkdf2:sha256` password hashing to protect sensitive HR data.
-*   **Persistent Historical Auditing**: Seamless `Flask-SQLAlchemy` (SQLite) integration ensures every single interaction and risk profile is permanently logged for HR auditing.
-
----
-
-## 🛠️ Technology Stack
-
-| Domain | Tools Used |
-| :--- | :--- |
-| **Machine Learning** | `scikit-learn`, `numpy`, `pandas`, `joblib` |
-| **Web Framework** | `Flask`, `Flask-Login`, `Flask-SQLAlchemy` |
-| **Frontend/UI** | `HTML5`, Vanilla CSS, `Chart.js` |
-| **Production/DevOps** | `Gunicorn`, `Docker`, `Pytest`, `GitHub Actions (CI/CD)` |
